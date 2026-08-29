@@ -12,7 +12,7 @@ export default function ScheduleStep({
 }) {
   return (
     <div className="flex flex-col gap-6">
-      <p className="text-sm text-white/50">
+      <p className="text-sm text-muted-foreground">
         Pick your campaign timeline — all dates will show up and stay in the
         time zone you choose.
       </p>
@@ -21,28 +21,28 @@ export default function ScheduleStep({
         <button
           type="button"
           onClick={() => onChange({ publishOption: "immediately" })}
-          className={`flex-1 rounded-lg border p-4 text-left transition-colors ${
+          className={`flex-1  border p-4 text-left transition-colors ${
             data.publishOption === "immediately"
               ? "border-[#8B5CF6] bg-[#8B5CF6]/5"
-              : "border-white/10 hover:border-white/20"
+              : "border-foreground/30 hover:border-white/20"
           }`}
         >
-          <p className="text-sm font-semibold text-white">Publish immediately</p>
-          <p className="mt-1 text-xs text-white/45">
+          <p className="text-sm font-semibold text-foreground">Publish immediately</p>
+          <p className="mt-1 text-xs text-muted-foreground">
             Make this quest available when published.
           </p>
         </button>
         <button
           type="button"
           onClick={() => onChange({ publishOption: "scheduled" })}
-          className={`flex-1 rounded-lg border p-4 text-left transition-colors ${
+          className={`flex-1  border p-4 text-left transition-colors ${
             data.publishOption === "scheduled"
               ? "border-[#8B5CF6] bg-[#8B5CF6]/5"
-              : "border-white/10 hover:border-white/20"
+              : "border-foreground/30 hover:border-white/20"
           }`}
         >
-          <p className="text-sm font-semibold text-white">Schedule for later</p>
-          <p className="mt-1 text-xs text-white/45">
+          <p className="text-sm font-semibold text-foreground">Schedule for later</p>
+          <p className="mt-1 text-xs text-muted-foreground">
             Publish automatically at the start date.
           </p>
         </button>

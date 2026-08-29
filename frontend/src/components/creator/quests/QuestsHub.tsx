@@ -152,21 +152,21 @@ export default function QuestsHub() {
     <div>
       <div className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <h1 className="text-xl font-semibold text-white">Quests</h1>
-          <p className="mt-1 text-sm text-white/50">
+          <h1 className="text-xl font-semibold text-foreground">Quests</h1>
+          <p className="mt-1 text-sm text-muted-foreground">
             Create, manage and review your participation campaigns.
           </p>
         </div>
         <Link
           href="/creator/quests/new"
-          className="inline-flex shrink-0 items-center justify-center rounded-lg bg-[#8B5CF6] px-4 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-[#7c0de0]"
+          className="inline-flex shrink-0 items-center justify-center  bg-[#8B5CF6] px-4 py-2.5 text-sm font-semibold text-foreground transition-colors hover:bg-[#7c0de0]"
         >
           + Add new Quest
         </Link>
       </div>
 
       <div
-        className="flex gap-6 border-b border-white/10 text-sm font-medium text-white/40"
+        className="flex gap-6 border-b border-foreground/30 text-sm font-medium text-muted-foreground"
         role="tablist"
         aria-label="Quest status"
       >
@@ -180,16 +180,16 @@ export default function QuestsHub() {
               role="tab"
               aria-selected={isActive}
               onClick={() => setActiveTab(tab.key)}
-              className={`relative flex items-center gap-1.5 pb-3 transition-colors hover:text-white ${
-                isActive ? "text-[#B78CFF]" : ""
+              className={`relative flex items-center gap-1.5 pb-3 transition-colors hover:text-foreground ${
+                isActive ? "text-foreground" : ""
               }`}
             >
               {tab.label}
               <span
                 className={`rounded-full px-1.5 py-0.5 text-xs ${
                   isActive
-                    ? "bg-[#8B5CF6]/20 text-[#B78CFF]"
-                    : "bg-white/5 text-white/40"
+                    ? "bg-[#8B5CF6]/20 text-foreground"
+                    : "bg-white/5 text-muted-foreground"
                 }`}
               >
                 {counts[tab.key]}
@@ -205,19 +205,19 @@ export default function QuestsHub() {
       <div className="pt-6">
         {!connected || !publicKey ? (
           <div className="flex flex-col items-center py-12 text-center">
-            <p className="text-sm text-white/50">
+            <p className="text-sm text-muted-foreground">
               Connect your wallet to load your quests.
             </p>
             <button
               type="button"
               onClick={() => void connect()}
-              className="mt-4 rounded-lg bg-[#8B5CF6] px-4 py-2 text-sm font-semibold text-white hover:bg-[#7c0de0]"
+              className="mt-4  bg-[#8B5CF6] px-4 py-2 text-sm font-semibold text-foreground hover:bg-[#7c0de0]"
             >
               Connect wallet
             </button>
           </div>
         ) : loading ? (
-          <div className="flex items-center justify-center gap-2 py-12 text-sm text-white/50">
+          <div className="flex items-center justify-center gap-2 py-12 text-sm text-muted-foreground">
             <LoaderCircle className="size-4 animate-spin" />
             Loading quests…
           </div>
@@ -228,7 +228,7 @@ export default function QuestsHub() {
             <button
               type="button"
               onClick={() => void loadQuests()}
-              className="mt-4 rounded-md border border-white/15 px-3 py-1.5 text-sm text-white hover:bg-white/5"
+              className="mt-4 rounded-md border border-white/15 px-3 py-1.5 text-sm text-foreground hover:bg-white/5"
             >
               Try again
             </button>
@@ -237,7 +237,7 @@ export default function QuestsHub() {
           activeTab === "active" ? (
             <EmptyActiveQuests />
           ) : (
-            <p className="py-12 text-center text-sm text-white/40">
+            <p className="py-12 text-center text-sm text-muted-foreground">
               No {activeTab} quests yet.
             </p>
           )

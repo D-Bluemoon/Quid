@@ -43,7 +43,7 @@ export default function TasksStep({
 
   return (
     <div className="flex flex-col gap-4">
-      <p className="text-sm text-white/50">
+      <p className="text-sm text-muted-foreground">
         Use clear questions and only request evidence that is useful for
         review.
       </p>
@@ -51,11 +51,11 @@ export default function TasksStep({
       {tasks.map((task, index) => (
         <div
           key={task.id}
-          className="rounded-xl border border-white/10 bg-[#100D1C]/60 p-4"
+          className=" border border-foreground/30 bg-[#100D1C]/60 p-4"
         >
           <div className="mb-4 flex items-center justify-between gap-2">
-            <div className="flex items-center gap-2 text-xs font-semibold tracking-wide text-white/50">
-              <GripVertical className="size-4 text-white/30" />
+            <div className="flex items-center gap-2 text-xs font-semibold tracking-wide text-muted-foreground">
+              <GripVertical className="size-4 text-foreground/30" />
               TASK {index + 1}
               <div className="flex flex-col">
                 <button
@@ -63,7 +63,7 @@ export default function TasksStep({
                   aria-label="Move task up"
                   disabled={index === 0}
                   onClick={() => moveTask(index, -1)}
-                  className="text-white/30 hover:text-white disabled:cursor-not-allowed disabled:opacity-30"
+                  className="text-foreground/30 hover:text-foreground disabled:cursor-not-allowed disabled:opacity-30"
                 >
                   <ChevronUp className="size-3.5" />
                 </button>
@@ -72,7 +72,7 @@ export default function TasksStep({
                   aria-label="Move task down"
                   disabled={index === tasks.length - 1}
                   onClick={() => moveTask(index, 1)}
-                  className="text-white/30 hover:text-white disabled:cursor-not-allowed disabled:opacity-30"
+                  className="text-foreground/30 hover:text-foreground disabled:cursor-not-allowed disabled:opacity-30"
                 >
                   <ChevronDown className="size-3.5" />
                 </button>
@@ -94,7 +94,7 @@ export default function TasksStep({
                 type="button"
                 aria-label="Remove task"
                 onClick={() => removeTask(task.id)}
-                className="flex size-9 shrink-0 items-center justify-center rounded-md text-white/40 transition-colors hover:bg-white/5 hover:text-red-400"
+                className="flex size-9 shrink-0 items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-white/5 hover:text-red-400"
               >
                 <Trash2 className="size-4" />
               </button>
@@ -105,7 +105,7 @@ export default function TasksStep({
             <div className="mb-2 flex items-center justify-between">
               <label
                 htmlFor={`task-title-${task.id}`}
-                className="text-sm font-medium text-white"
+                className="text-sm font-medium text-foreground"
               >
                 Task title
               </label>
@@ -140,7 +140,7 @@ export default function TasksStep({
       <button
         type="button"
         onClick={() => onChange([...tasks, createTaskBlock()])}
-        className="flex items-center justify-center gap-1.5 self-start rounded-lg border border-white/15 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-white/5"
+        className="flex items-center justify-center gap-1.5 self-start  border border-white/15 px-4 py-2 text-sm font-medium text-foreground transition-colors hover:bg-white/5"
       >
         <Plus className="size-4" />
         Add task block

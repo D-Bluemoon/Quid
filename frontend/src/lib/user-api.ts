@@ -1,4 +1,5 @@
 import { creatorApiFetch, hasApiSession, isApiConfigured } from '@/lib/creator-api';
+import { isNetworkError } from '@/lib/api-network';
 import {
   fromServerRole,
   saveUserRole,
@@ -51,16 +52,29 @@ export async function persistUserRole(
     return false;
   }
 
-  const response = await creatorApiFetch('/users/me/role', address, {
-    method: 'PATCH',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ role: toServerRole(role) }),
-  });
+  try {
+    const response = await creatorApiFetch('/users/me/role', address, {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ role: toServerRole(role) }),
+    });
 
-  if (!response.ok) {
-    throw new Error('Could not save your account type. Please try again.');
+    if (!response.ok) {
+      throw new Error('Could not save your account type. Please try again.');
+    }
+
+    saveUserRole(role);
+    return true;
+  } catch (error) {
+    if (isNetworkError(error)) {
+      console.warn(
+        '[Quid] API unreachable — saving account type locally. Start the backend or unset NEXT_PUBLIC_API_URL for frontend-only mode.',
+        error,
+      );
+      saveUserRole(role);
+      return false;
+    }
+
+    throw error;
   }
-
-  saveUserRole(role);
-  return true;
 }

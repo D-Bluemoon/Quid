@@ -31,10 +31,10 @@ export default function WizardStepper({
               <span
                 className={`flex size-5 shrink-0 items-center justify-center rounded-full text-xs font-semibold ${
                   isCompleted
-                    ? "bg-[#8B5CF6] text-white"
+                    ? "bg-[#8B5CF6] text-foreground"
                     : isCurrent
-                      ? "bg-[#8B5CF6] text-white"
-                      : "bg-white/10 text-white/40"
+                      ? "bg-[#8B5CF6] text-foreground"
+                      : "bg-white/10 text-muted-foreground"
                 }`}
               >
                 {isCompleted ? <Check className="size-3" /> : index + 1}
@@ -42,10 +42,10 @@ export default function WizardStepper({
               <span
                 className={`whitespace-nowrap text-sm ${
                   isCurrent
-                    ? "font-semibold text-white"
+                    ? "font-semibold text-foreground"
                     : isCompleted
-                      ? "text-white/70"
-                      : "text-white/35"
+                      ? "text-muted-foreground"
+                      : "text-foreground/35"
                 }`}
               >
                 {step.label}

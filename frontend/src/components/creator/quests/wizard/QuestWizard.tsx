@@ -81,11 +81,11 @@ export default function QuestWizard({
   }
 
   return (
-    <div className="flex h-full flex-col bg-[#0B0913]">
+    <div className="flex h-full flex-col bg-background brutal-grid-bg">
       <div className="flex items-center justify-between px-6 py-4">
         <Link
           href="/creator/quests"
-          className="flex items-center gap-1.5 text-sm text-white/60 transition-colors hover:text-white"
+          className="flex items-center gap-1.5 text-sm text-muted-foreground transition-colors hover:text-foreground"
         >
           <X className="size-4" />
           Exit creator
@@ -96,12 +96,12 @@ export default function QuestWizard({
             Saved
           </span>
         ) : (
-          <span className="text-sm text-white/30">Saving…</span>
+          <span className="text-sm text-foreground/30">Saving…</span>
         )}
       </div>
 
       <div className="px-6">
-        <h1 className="mb-4 text-xl font-semibold text-white">
+        <h1 className="mb-4 text-xl font-semibold text-foreground">
           {data.basics.title || "Create a quest"}
         </h1>
         <WizardStepper
@@ -111,7 +111,7 @@ export default function QuestWizard({
         />
       </div>
 
-      <div className="mt-4 flex-1 overflow-y-auto border-t border-white/10 px-6 py-6">
+      <div className="mt-4 flex-1 overflow-y-auto border-t border-foreground/30 px-6 py-6">
         {currentIndex === 0 ? (
           <BasicsStep
             data={data.basics}

@@ -28,7 +28,7 @@ export default function CreateQuestPage() {
           className="absolute inset-0 bg-black/60 backdrop-blur-[1px]"
         />
 
-        <div className="absolute inset-y-0 right-0 w-full border-l border-white/10 bg-[#0B0913] shadow-2xl sm:w-[45%]">
+        <div className="absolute inset-y-0 right-0 w-full border-l border-foreground/30 bg-background brutal-grid-bg shadow-2xl sm:w-[45%]">
           <QuestWizard onPublish={setPublishedQuestId} />
         </div>
       </div>

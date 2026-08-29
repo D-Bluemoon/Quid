@@ -13,7 +13,7 @@ export default function HunterLayout({
       {/* Issue #331: the wallet gate says who you are, this says which
           dashboard is yours - server role first, local role as the fallback. */}
       <RequireRole role="hunter">
-        <div className="flex h-screen bg-[#0D0B10] text-white">
+        <div className="flex h-screen bg-background text-foreground brutal-grid-bg">
           <Sidebar />
           <div className="flex min-w-0 flex-1 flex-col">
             <TopNav />

@@ -1,7 +1,6 @@
 import { signFreighterTransaction } from "@/lib/freighter-wallet";
+import { getApiBaseUrl } from "@/lib/api-base";
 import type { Networks } from "@stellar/stellar-sdk";
-
-const API_URL = process.env.NEXT_PUBLIC_API_URL?.replace(/\/$/, "") || "http://localhost:3001";
 const SESSION_KEY = "quid_hunter_auth";
 
 export interface FeedbackPayload {
@@ -55,8 +54,10 @@ export async function authenticateHunter(address: string): Promise<string> {
   const cached = readStoredSession(address);
   if (cached) return cached;
 
+  const apiBase = getApiBaseUrl();
+
   const challengeRes = await fetch(
-    `${API_URL}/auth/challenge?address=${encodeURIComponent(address)}`,
+    `${apiBase}/auth/challenge?address=${encodeURIComponent(address)}`,
   );
   if (!challengeRes.ok) {
     throw new Error(`Failed to request wallet auth challenge: ${challengeRes.statusText}`);
@@ -69,7 +70,7 @@ export async function authenticateHunter(address: string): Promise<string> {
     challenge.networkPassphrase,
   );
 
-  const verifyRes = await fetch(`${API_URL}/auth/verify`, {
+  const verifyRes = await fetch(`${apiBase}/auth/verify`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ signedXdr }),
@@ -98,6 +99,8 @@ export async function uploadFeedbackToIpfs(
   try {
     let token = readStoredSession(payload.hunterAddress);
 
+    const apiBase = getApiBaseUrl();
+
     const doUpload = async (authToken?: string) => {
       const headers: Record<string, string> = {
         "Content-Type": "application/json",
@@ -106,7 +109,7 @@ export async function uploadFeedbackToIpfs(
         headers["Authorization"] = `Bearer ${authToken}`;
       }
 
-      return fetch(`${API_URL}/upload/json`, {
+      return fetch(`${apiBase}/upload/json`, {
         method: "POST",
         headers,
         body: JSON.stringify({

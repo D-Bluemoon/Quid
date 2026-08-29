@@ -26,7 +26,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${spaceGrotesk.variable} ${geistMono.variable} font-sans antialiased`}
+        className={`${spaceGrotesk.variable} ${geistMono.variable} font-sans antialiased bg-background text-foreground brutal-grid-bg`}
       >
         <WalletProvider>
           {children}

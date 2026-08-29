@@ -41,8 +41,8 @@ export default function WalletConnectButton({
 
   const baseStyles =
     variant === 'nav'
-      ? 'bg-[#9011FF] rounded-[12px] px-7 py-3 text-lg font-semibold shadow-lg shadow-violet-500/30 hover:bg-purple-700'
-      : 'bg-[#9011FF] hover:bg-purple-700 text-white rounded-full px-6 py-2 font-semibold';
+      ? 'brutal-border brutal-shadow bg-brutal-pink rounded-[12px] px-7 py-3 text-lg font-semibold shadow-lg shadow-violet-500/30 hover:translate-x-[-1px] hover:translate-y-[-1px]'
+      : 'brutal-border brutal-shadow bg-brutal-pink hover:translate-x-[-1px] hover:translate-y-[-1px] text-white rounded-full px-6 py-2 font-semibold';
 
   const getLabel = () => {
     if (isLoading) {

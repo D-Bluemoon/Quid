@@ -59,10 +59,10 @@ export default function CreatorQuestDetail({
   };
   const [activeTab, setActiveTab] = useState<"details" | "response">("details");
   return (
-    <div className="text-white px-3 py-1">
+    <div className="text-foreground px-3 py-1">
       <QuestHeader />
       <div className="font-inter flex justify-between items-center w-full">
-        <div className="flex flex-col justify-normal items-start gap-2 text-white py-6">
+        <div className="flex flex-col justify-normal items-start gap-2 text-foreground py-6">
           <h2 className="text-2xl md:text-4xl font-bold">{quest?.title || "Quest"}</h2>
           <div className="flex gap-4 items-center text-sm md:text-base">
             <span className={`px-3 py-1 rounded-full capitalize ${quest?.status === 'active' ? 'bg-green-500/20 text-green-400' : 'bg-gray-500/20 text-gray-400'}`}>
@@ -82,23 +82,23 @@ export default function CreatorQuestDetail({
       
       {/* Quest Description */}
       {quest?.description && (
-        <div className="bg-[#141026] rounded-2xl p-4 md:p-6 mb-6">
-          <h3 className="text-white font-semibold mb-2">Description</h3>
-          <p className="text-[#CFC9FF] text-sm md:text-base">{quest.description}</p>
+        <div className="brutal-border brutal-shadow bg-card  p-4 md:p-6 mb-6">
+          <h3 className="text-foreground font-semibold mb-2">Description</h3>
+          <p className="text-foreground text-sm md:text-base">{quest.description}</p>
         </div>
       )}
       <div className="flex justify-normal items-start">
         <div className="w-[30%] hidden md:block">
           <p className="text-[#8C86B8] p-2">About survery</p>
-          <div className=" border-t border-r border-b border-[#241B4A]">
-            <div className="text-white flex flex-col gap-2 p-3 border-b border-b-[#241B4A] py-6">
+          <div className=" border-t border-r border-b border-foreground">
+            <div className="text-foreground flex flex-col gap-2 p-3 border-b border-b-[#241B4A] py-6">
               <p>Product link</p>
-              <p className="bg-[#1B1540] p-2 rounded-lg">
+              <p className="brutal-border bg-background p-2 ">
                 https://productlink.com
               </p>
             </div>
           </div>
-          <div className=" border-r border-b border-[#241B4A] flex flex-col gap-2 items-start text-white p-2 py-6">
+          <div className=" border-r border-b border-foreground flex flex-col gap-2 items-start text-foreground p-2 py-6">
             <div className="flex items-center gap-2">
               <Image
                 src="/quest-detail/stellar-icon.png"
@@ -110,38 +110,38 @@ export default function CreatorQuestDetail({
               <h2 className="text-2xl font-semibold">{quest?.reward || 640} XLM</h2>
             </div>
             <div className="flex items-center gap-2">
-              <div className="size-3 bg-[#9011FF] rounded-full" />
-              <p className="text-[#CFC9FF]">{quest?.slots ? Math.floor(quest.reward / quest.slots) : 10} XLM per Winner</p>
+              <div className="size-3 brutal-border brutal-shadow bg-brutal-pink rounded-full" />
+              <p className="text-foreground">{quest?.slots ? Math.floor(quest.reward / quest.slots) : 10} XLM per Winner</p>
             </div>
           </div>
-          <div className=" border-r border-b border-[#241B4A] flex flex-col gap-2 items-start text-white p-2 py-6">
+          <div className=" border-r border-b border-foreground flex flex-col gap-2 items-start text-foreground p-2 py-6">
             <h2 className="text-2xl font-semibold">{quest?.slots || 24}</h2>
-            <p className="text-[#CFC9FF]">Available Slots</p>
+            <p className="text-foreground">Available Slots</p>
           </div>
-          <div className=" border-r border-b border-[#241B4A] flex flex-col gap-2 items-start text-white p-2 py-6">
+          <div className=" border-r border-b border-foreground flex flex-col gap-2 items-start text-foreground p-2 py-6">
             <h2 className="text-2xl font-semibold">{submissions.length}</h2>
-            <p className="text-[#CFC9FF]">Total Responses</p>
+            <p className="text-foreground">Total Responses</p>
           </div>
-          <div className=" border-r border-b border-[#241B4A] flex flex-col gap-2 items-start text-white p-2 py-6">
+          <div className=" border-r border-b border-foreground flex flex-col gap-2 items-start text-foreground p-2 py-6">
             <h2 className="text-xl font-semibold">{quest?.deadline ? new Date(quest.deadline).toLocaleDateString() : "N/A"}</h2>
-            <p className="text-[#CFC9FF]">Deadline</p>
-            <p className="text-[#CFC9FF]">Time Left</p>
+            <p className="text-foreground">Deadline</p>
+            <p className="text-foreground">Time Left</p>
           </div>
-          <div className=" border-r  border-[#241B4A] flex flex-col gap-1 items-start text-white p-2 py-4 h-screen">
-            <p className="text-[#CFC9FF]">Winner announcement</p>
+          <div className=" border-r  border-foreground flex flex-col gap-1 items-start text-foreground p-2 py-4 h-screen">
+            <p className="text-foreground">Winner announcement</p>
             <p>24th January, 2026</p>
           </div>
         </div>
         {/* END OF ABOUT SURVERY SECTION  */}
         <div className="md:w-[70%] w-full">
-          <div className="flex justify-normal items-center gap-6 text-[#CFC9FF] p-0.75 pl-2  border-b-[#241B4A] border-b">
+          <div className="flex justify-normal items-center gap-6 text-foreground p-0.75 pl-2  border-b-[#241B4A] border-b">
             {["Details", "Response"].map((tab) => (
               <button
                 key={tab}
                 className={`border-b-2 cursor-pointer flex items-center ${
                   activeTab.toLowerCase() === tab.toLowerCase()
-                    ? "border-b-[#601AFF] text-white"
-                    : "border-transparent text-[#CFC9FF]"
+                    ? "border-b-[#601AFF] text-foreground"
+                    : "border-transparent text-foreground"
                 }`}
                 onClick={() =>
                   setActiveTab(
@@ -151,7 +151,7 @@ export default function CreatorQuestDetail({
               >
                 {tab}
                 {submissions.length > 0 && tab === "Response" && (
-                  <span className="bg-[#9011FF] text-xs ml-2 py-1 mb-2 px-2 rounded-md ">
+                  <span className="brutal-border brutal-shadow bg-brutal-pink text-xs ml-2 py-1 mb-2 px-2 rounded-md ">
                     {submissions.length}
                   </span>
                 )}
@@ -173,8 +173,8 @@ export default function CreatorQuestDetail({
                     isApproved={approvedSubmissions.includes(sub.id)}
                   />
                   {rejectConfirm === sub.id && (
-                    <div className="mx-4 mb-4 bg-[#1A1330] border border-red-500/30 rounded-xl p-4">
-                      <p className="text-sm text-[#CFC9FF] mb-3">
+                    <div className="mx-4 mb-4 bg-[#1A1330] border border-red-500/30  p-4">
+                      <p className="text-sm text-foreground mb-3">
                         Are you sure you want to reject this submission?
                       </p>
                       <textarea
@@ -182,18 +182,18 @@ export default function CreatorQuestDetail({
                         onChange={(e) => setRejectReason(e.target.value)}
                         placeholder="Optional reason for rejection…"
                         rows={2}
-                        className="w-full bg-[#1B1540] border border-[#241B4A] rounded-lg px-3 py-2 text-white text-sm focus:outline-none focus:border-red-400 resize-none mb-3"
+                        className="w-full brutal-border bg-background border border-foreground  px-3 py-2 text-foreground text-sm focus:outline-none focus:border-red-400 resize-none mb-3"
                       />
                       <div className="flex gap-3">
                         <button
                           onClick={() => handleReject(sub.id)}
-                          className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors"
+                          className="bg-red-500 hover:bg-red-600 text-foreground px-4 py-2  text-sm font-medium transition-colors"
                         >
                           Confirm Reject
                         </button>
                         <button
                           onClick={() => { setRejectConfirm(null); setRejectReason(""); }}
-                          className="border border-[#241B4A] hover:bg-[#1B1540] text-white px-4 py-2 rounded-lg text-sm transition-colors"
+                          className="border border-foreground hover:brutal-border bg-background text-foreground px-4 py-2  text-sm transition-colors"
                         >
                           Cancel
                         </button>

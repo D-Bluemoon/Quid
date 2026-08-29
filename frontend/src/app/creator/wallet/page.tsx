@@ -79,18 +79,18 @@ export default function WalletPage() {
 
   if (!isConnected || !publicKey) {
     return (
-      <div className="text-white">
+      <div className="text-foreground">
         <WalletPageToolbar onRefresh={refreshBalances} loading={loading} />
         <div className="px-5 py-8 sm:px-8 lg:px-12">
-          <div className="max-w-md mx-auto mt-16 bg-[#141026] border border-[#241B4A] rounded-2xl p-8 text-center">
-            <Wallet className="w-12 h-12 text-[#9011FF] mx-auto mb-4" />
+          <div className="max-w-md mx-auto mt-16 brutal-border brutal-shadow bg-card border border-foreground  p-8 text-center">
+            <Wallet className="w-12 h-12 text-foreground mx-auto mb-4" />
             <h2 className="text-lg font-semibold mb-2">No wallet connected</h2>
             <p className="text-sm text-[#8C86B8] mb-6">
               Connect a Stellar wallet to view your balances and address.
             </p>
             <Link
               href="/connect-wallet"
-              className="inline-flex items-center justify-center min-h-11 bg-[#9011FF] hover:bg-[#7d0dd4] text-white font-semibold px-6 py-2.5 rounded-lg transition-colors"
+              className="inline-flex items-center justify-center min-h-11 brutal-border brutal-shadow bg-brutal-pink hover:translate-x-[-1px] hover:translate-y-[-1px] text-foreground font-semibold px-6 py-2.5  transition-colors"
             >
               Connect Wallet
             </Link>
@@ -101,12 +101,12 @@ export default function WalletPage() {
   }
 
   return (
-    <div className="text-white">
+    <div className="text-foreground">
       <WalletPageToolbar onRefresh={refreshBalances} loading={loading} />
 
       <div className="space-y-6 px-5 py-6 sm:px-8 lg:px-12">
         {error && (
-          <div className="flex items-start gap-2 bg-red-500/10 border border-red-500/30 text-red-300 rounded-xl px-4 py-3 text-sm">
+          <div className="flex items-start gap-2 bg-red-500/10 border border-red-500/30 text-red-300  px-4 py-3 text-sm">
             <AlertTriangle className="w-5 h-5 shrink-0" />
             <p>{error}</p>
           </div>
@@ -114,7 +114,7 @@ export default function WalletPage() {
 
         {/* Unfunded testnet account → Friendbot */}
         {!loading && !funded && (
-          <div className="bg-[#141026] border border-yellow-500/30 rounded-2xl p-5">
+          <div className="brutal-border brutal-shadow bg-card border border-yellow-500/30  p-5">
             <div className="flex items-start gap-3">
               <AlertTriangle className="w-6 h-6 text-yellow-400 shrink-0" />
               <div className="flex-1">
@@ -127,7 +127,7 @@ export default function WalletPage() {
                   <button
                     onClick={fundWithFriendbot}
                     disabled={funding}
-                    className="flex items-center justify-center gap-2 min-h-11 bg-[#9011FF] hover:bg-[#7d0dd4] text-white font-semibold px-5 py-2.5 rounded-lg transition-colors disabled:opacity-50"
+                    className="flex items-center justify-center gap-2 min-h-11 brutal-border brutal-shadow bg-brutal-pink hover:translate-x-[-1px] hover:translate-y-[-1px] text-foreground font-semibold px-5 py-2.5  transition-colors disabled:opacity-50"
                   >
                     <Droplets
                       className={`w-4 h-4 ${funding ? "animate-pulse" : ""}`}
@@ -138,7 +138,7 @@ export default function WalletPage() {
                     href={`https://lab.stellar.org/account/fund?addr=${publicKey}`}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="flex items-center justify-center gap-2 min-h-11 border border-[#241B4A] hover:bg-[#1B1540] text-[#CFC9FF] font-medium px-5 py-2.5 rounded-lg transition-colors"
+                    className="flex items-center justify-center gap-2 min-h-11 border border-foreground hover:brutal-border bg-background text-foreground font-medium px-5 py-2.5  transition-colors"
                   >
                     Open Stellar Laboratory
                     <ExternalLink className="w-4 h-4" />
@@ -150,10 +150,10 @@ export default function WalletPage() {
         )}
 
         {/* Wallet Balance card — real on-chain balances only */}
-        <div className="rounded-2xl border border-[#241B4A] bg-gradient-to-br from-[#1A1330] to-[#141026] p-6 sm:p-8">
+        <div className=" border border-foreground bg-gradient-to-br from-[#1A1330] to-[#141026] p-6 sm:p-8">
           <div className="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-6">
             <div>
-              <div className="flex items-center gap-2 text-[#CFC9FF] mb-3">
+              <div className="flex items-center gap-2 text-foreground mb-3">
                 <Wallet className="w-5 h-5" />
                 <span className="text-sm font-medium">Horizon Balances</span>
               </div>
@@ -200,7 +200,7 @@ export default function WalletPage() {
               <button
                 disabled
                 title="Coming soon — withdrawals are not yet available"
-                className="flex items-center justify-center gap-2 min-h-11 bg-[#9011FF]/50 text-white/60 font-semibold px-5 py-2.5 rounded-xl cursor-not-allowed"
+                className="flex items-center justify-center gap-2 min-h-11 brutal-border brutal-shadow bg-brutal-pink/50 text-muted-foreground font-semibold px-5 py-2.5  cursor-not-allowed"
               >
                 <ArrowDownToLine className="w-4 h-4" />
                 Withdraw Funds
@@ -210,7 +210,7 @@ export default function WalletPage() {
                 <button
                   onClick={fundWithFriendbot}
                   disabled={funding}
-                  className="flex items-center justify-center gap-2 min-h-11 border border-[#241B4A] hover:bg-[#1B1540] text-white font-semibold px-5 py-2.5 rounded-xl transition-colors disabled:opacity-50"
+                  className="flex items-center justify-center gap-2 min-h-11 border border-foreground hover:brutal-border bg-background text-foreground font-semibold px-5 py-2.5  transition-colors disabled:opacity-50"
                 >
                   <Droplets className={`w-4 h-4 ${funding ? "animate-pulse" : ""}`} />
                   {funding ? "Funding..." : "Fund with Friendbot"}
@@ -232,7 +232,7 @@ export default function WalletPage() {
             <div className="overflow-x-auto">
               <table className="w-full min-w-[560px] text-sm">
                 <thead>
-                  <tr className="text-left text-[#8C86B8] border-b border-[#241B4A]">
+                  <tr className="text-left text-[#8C86B8] border-b border-foreground">
                     <th className="font-medium py-3 pr-4">Type</th>
                     <th className="font-medium py-3 pr-4">From / To</th>
                     <th className="font-medium py-3 pr-4">Amount</th>
@@ -245,7 +245,7 @@ export default function WalletPage() {
                     Array.from({ length: 4 }).map((_, i) => (
                       <tr
                         key={i}
-                        className="border-b border-[#241B4A]/60 last:border-0"
+                        className="border-b border-foreground/60 last:border-0"
                       >
                         <td colSpan={5} className="py-4">
                           <span className="block h-5 w-full bg-[#241B4A] rounded animate-pulse" />
@@ -265,7 +265,7 @@ export default function WalletPage() {
                     transactions.map((tx) => (
                       <tr
                         key={tx.id}
-                        className="border-b border-[#241B4A]/60 last:border-0"
+                        className="border-b border-foreground/60 last:border-0"
                       >
                         <td className="py-4 pr-4">
                           <div className="flex items-center gap-2">
@@ -299,7 +299,7 @@ export default function WalletPage() {
                             target="_blank"
                             rel="noopener noreferrer"
                             title={tx.counterparty}
-                            className="block truncate font-mono text-xs text-[#CFC9FF] hover:text-white"
+                            className="block truncate font-mono text-xs text-foreground hover:text-foreground"
                           >
                             {truncateKey(tx.counterparty)}
                           </a>
@@ -339,11 +339,11 @@ export default function WalletPage() {
           {/* Withdrawal Method */}
           <div className="lg:col-span-1">
             <h2 className="text-base font-semibold mb-4">Withdrawal Method</h2>
-            <div className="bg-[#141026] border border-[#241B4A] rounded-xl p-4">
+            <div className="brutal-border brutal-shadow bg-card border border-foreground  p-4">
               <div className="flex items-center justify-between gap-3">
                 <div className="flex items-center gap-3 min-w-0">
-                  <span className="flex items-center justify-center w-9 h-9 rounded-lg bg-[#1B1540] shrink-0">
-                    <Wallet className="w-5 h-5 text-[#9011FF]" />
+                  <span className="flex items-center justify-center w-9 h-9  brutal-border bg-background shrink-0">
+                    <Wallet className="w-5 h-5 text-foreground" />
                   </span>
                   <div className="min-w-0">
                     <p className="text-sm font-medium truncate">
@@ -359,7 +359,7 @@ export default function WalletPage() {
                       <button
                         onClick={handleCopy}
                         aria-label="Copy wallet address"
-                        className="text-[#8C86B8] hover:text-white transition-colors"
+                        className="text-[#8C86B8] hover:text-foreground transition-colors"
                       >
                         {copied ? (
                           <Check className="w-3.5 h-3.5 text-green-400" />
@@ -396,17 +396,17 @@ function WalletPageToolbar({
   loading: boolean;
 }) {
   return (
-    <div className="flex items-center justify-between border-b border-white/10 px-5 py-5 sm:px-8 lg:px-12">
+    <div className="flex items-center justify-between border-b border-foreground/30 px-5 py-5 sm:px-8 lg:px-12">
       <h1 className="text-xl font-semibold sm:text-2xl">Wallet</h1>
       <button
         type="button"
         onClick={onRefresh}
         disabled={loading}
         aria-label="Refresh balances"
-        className="flex min-h-9 min-w-9 items-center justify-center rounded-lg transition-colors hover:bg-white/5 disabled:opacity-50"
+        className="flex min-h-9 min-w-9 items-center justify-center  transition-colors hover:bg-white/5 disabled:opacity-50"
       >
         <RefreshCw
-          className={`size-5 text-white/70 ${loading ? "animate-spin" : ""}`}
+          className={`size-5 text-muted-foreground ${loading ? "animate-spin" : ""}`}
         />
       </button>
     </div>

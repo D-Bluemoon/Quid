@@ -43,7 +43,7 @@ export default function QuestRowMenu({
         aria-haspopup="menu"
         aria-expanded={open}
         onClick={() => setOpen((prev) => !prev)}
-        className="flex size-8 items-center justify-center rounded-md text-white/50 transition-colors hover:bg-white/5 hover:text-white"
+        className="flex size-8 items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-white/5 hover:text-foreground"
       >
         <MoreHorizontal className="size-5" />
       </button>
@@ -51,7 +51,7 @@ export default function QuestRowMenu({
       {open ? (
         <div
           role="menu"
-          className="absolute right-0 top-10 z-10 w-48 overflow-hidden rounded-xl border border-white/10 bg-[#100D1C] py-1.5 shadow-xl shadow-black/50"
+          className="absolute right-0 top-10 z-10 w-48 overflow-hidden  border border-foreground/30 bg-[#100D1C] py-1.5 shadow-xl shadow-black/50"
         >
           {options.map((option) => {
             const Icon = option.icon;
@@ -66,7 +66,7 @@ export default function QuestRowMenu({
                   setOpen(false);
                 }}
                 className={`flex w-full items-center gap-2.5 px-4 py-2.5 text-left text-sm transition-colors hover:bg-white/5 ${
-                  option.danger ? "text-red-400" : "text-white/90"
+                  option.danger ? "text-red-400" : "text-foreground"
                 }`}
               >
                 <Icon className="size-4" />

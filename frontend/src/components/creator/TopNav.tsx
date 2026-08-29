@@ -36,15 +36,15 @@ export default function TopNav() {
     (href !== "/creator" && pathname.startsWith(href));
 
   return (
-    <header className="shrink-0 border-b border-white/10 bg-[#0D0B10]/95 backdrop-blur">
+    <header className="shrink-0 border-b-[3px] border-foreground bg-card">
       <div className="flex h-20 items-center justify-between px-5 sm:px-8 lg:px-12">
-        <nav className="hidden items-center gap-10 text-sm text-white/70 lg:flex">
+        <nav className="hidden items-center gap-10 text-sm text-muted-foreground lg:flex">
           {topNavItems.map((item) => (
             <Link
               key={item.href}
               href={item.href}
-              className={`transition-colors hover:text-white ${
-                isActive(item.href) ? "text-white" : ""
+              className={`transition-colors hover:text-foreground ${
+                isActive(item.href) ? "text-foreground" : ""
               }`}
             >
               {item.label}
@@ -53,25 +53,25 @@ export default function TopNav() {
         </nav>
 
         <div className="ml-auto flex items-center gap-4 text-sm font-semibold">
-          <Bell className="hidden size-5 text-white/85 sm:block" />
+          <Bell className="hidden size-5 text-foreground sm:block" />
           <div className="relative">
             <button
               type="button"
               onClick={() => setShowLogout((prev) => !prev)}
-              className="flex items-center gap-2 rounded-lg border border-[#241B4A] bg-[#141026] px-3 py-1.5 text-xs font-mono text-[#CFC9FF] hover:border-[#9011FF] transition-colors"
+              className="flex cursor-pointer items-center gap-2 brutal-border bg-brutal-cyan px-3 py-1.5 font-mono text-xs font-bold text-foreground hover:translate-x-[-1px] hover:translate-y-[-1px] transition-transform"
             >
-              <span className="h-2 w-2 rounded-full bg-green-400" />
+              <span className="h-2 w-2 bg-brutal-lime brutal-border" />
               {publicKey ? truncateKey(publicKey) : ""}
             </button>
             {showLogout && (
-              <div className="absolute right-0 mt-2 w-48 rounded-xl border border-[#241B4A] bg-[#141026] p-2 shadow-xl z-50">
+              <div className="absolute right-0 z-50 mt-2 w-48 brutal-border brutal-shadow bg-card p-2">
                 <button
                   type="button"
                   onClick={() => {
                     disconnect();
                     setShowLogout(false);
                   }}
-                  className="flex w-full items-center gap-2 rounded-lg px-3 py-2 text-sm text-red-400 hover:bg-red-500/10 transition-colors"
+                  className="flex w-full cursor-pointer items-center gap-2 px-3 py-2 text-sm font-bold text-foreground hover:bg-brutal-pink/40"
                 >
                   <LogOut className="size-4" />
                   Disconnect wallet

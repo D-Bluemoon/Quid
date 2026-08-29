@@ -1,7 +1,7 @@
 import { ChevronDown, ChevronUp, Check } from "lucide-react";
 
 const INPUT_CLASSES =
-  "w-full rounded-lg border border-white/10 bg-[#100D1C] px-3 py-2.5 text-sm text-white placeholder:text-white/30 outline-none transition-colors focus:border-[#8B5CF6]/60";
+  "w-full  border border-foreground/30 bg-[#100D1C] px-3 py-2.5 text-sm text-foreground placeholder:text-foreground/30 outline-none transition-colors focus:border-[#8B5CF6]/60";
 
 export function FieldLabel({
   children,
@@ -14,10 +14,10 @@ export function FieldLabel({
 }) {
   return (
     <div className="mb-2 flex items-center justify-between">
-      <label htmlFor={htmlFor} className="text-sm font-medium text-white">
+      <label htmlFor={htmlFor} className="text-sm font-medium text-foreground">
         {children}
       </label>
-      {hint ? <span className="text-xs text-white/40">{hint}</span> : null}
+      {hint ? <span className="text-xs text-muted-foreground">{hint}</span> : null}
     </div>
   );
 }
@@ -98,7 +98,7 @@ export function SelectField({
           </option>
         ))}
       </select>
-      <ChevronDown className="pointer-events-none absolute right-3 top-1/2 size-4 -translate-y-1/2 text-white/40" />
+      <ChevronDown className="pointer-events-none absolute right-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
     </div>
   );
 }
@@ -138,7 +138,7 @@ export function NumberField({
           type="button"
           aria-label="Increase"
           onClick={() => step(1)}
-          className="text-white/40 hover:text-white"
+          className="text-muted-foreground hover:text-foreground"
         >
           <ChevronUp className="size-3.5" />
         </button>
@@ -146,7 +146,7 @@ export function NumberField({
           type="button"
           aria-label="Decrease"
           onClick={() => step(-1)}
-          className="text-white/40 hover:text-white"
+          className="text-muted-foreground hover:text-foreground"
         >
           <ChevronDown className="size-3.5" />
         </button>
@@ -185,7 +185,7 @@ export function Checkbox({
   label: string;
 }) {
   return (
-    <label className="flex cursor-pointer items-center gap-2.5 text-sm text-white/80">
+    <label className="flex cursor-pointer items-center gap-2.5 text-sm text-muted-foreground">
       <span
         onClick={() => onChange(!checked)}
         className={`flex size-4 shrink-0 items-center justify-center rounded border transition-colors ${
@@ -194,7 +194,7 @@ export function Checkbox({
             : "border-white/20 bg-transparent"
         }`}
       >
-        {checked ? <Check className="size-3 text-white" /> : null}
+        {checked ? <Check className="size-3 text-foreground" /> : null}
       </span>
       <span onClick={() => onChange(!checked)}>{label}</span>
     </label>
@@ -216,23 +216,23 @@ export function RadioCard({
     <button
       type="button"
       onClick={onSelect}
-      className={`flex-1 rounded-lg border p-4 text-left transition-colors ${
+      className={`flex-1  border p-4 text-left transition-colors ${
         selected
           ? "border-[#8B5CF6] bg-[#8B5CF6]/5"
-          : "border-white/10 bg-transparent hover:border-white/20"
+          : "border-foreground/30 bg-transparent hover:border-white/20"
       }`}
     >
       <div className="mb-1.5 flex items-center justify-between">
-        <span className="text-sm font-semibold text-white">{title}</span>
+        <span className="text-sm font-semibold text-foreground">{title}</span>
         <span
           className={`flex size-4 shrink-0 items-center justify-center rounded-full border ${
             selected ? "border-[#8B5CF6] bg-[#8B5CF6]" : "border-white/30"
           }`}
         >
-          {selected ? <Check className="size-2.5 text-white" /> : null}
+          {selected ? <Check className="size-2.5 text-foreground" /> : null}
         </span>
       </div>
-      <p className="text-xs leading-relaxed text-white/45">{description}</p>
+      <p className="text-xs leading-relaxed text-muted-foreground">{description}</p>
     </button>
   );
 }

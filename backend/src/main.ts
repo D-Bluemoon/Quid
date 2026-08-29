@@ -20,6 +20,9 @@ async function bootstrap() {
   // Global exception filter
   app.useGlobalFilters(new HttpExceptionFilter());
 
+  // Public routes are exposed at /api/* on Vercel (see vercel.json rewrites).
+  app.setGlobalPrefix("api");
+
   const port = process.env.PORT ?? 3000;
   await app.listen(port, '0.0.0.0');
 

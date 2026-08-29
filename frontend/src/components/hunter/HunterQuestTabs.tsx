@@ -179,7 +179,7 @@ export default function HunterQuestTabs() {
   return (
     <section aria-label={`${tabLabel} quests`}>
       <div
-        className="mt-6 flex gap-8 border-b border-white/10 text-lg font-semibold text-white/40"
+        className="mt-6 flex gap-8 border-b border-foreground/30 text-lg font-semibold text-muted-foreground"
         role="tablist"
         aria-label="Quest filters"
       >
@@ -194,8 +194,8 @@ export default function HunterQuestTabs() {
               role="tab"
               aria-selected={isActive}
               aria-controls={`${tab.id}-panel`}
-              className={`relative pb-4 transition-colors hover:text-white ${
-                isActive ? "text-[#B78CFF]" : ""
+              className={`relative pb-4 transition-colors hover:text-foreground ${
+                isActive ? "text-foreground" : ""
               }`}
               onClick={() => {
                 setActiveTab(tab.id);
@@ -258,18 +258,18 @@ function QuestRow({
   const isSubmitted = quest.status === "Submitted" || quest.status === "Reviewing";
 
   return (
-    <article className="grid gap-5 sm:grid-cols-[96px_1fr_auto] sm:items-center rounded-xl p-2 transition-colors hover:bg-white/[0.02]">
+    <article className="grid gap-5 sm:grid-cols-[96px_1fr_auto] sm:items-center  p-2 transition-colors hover:bg-white/[0.02]">
       <Image
         src={quest.icon}
         alt={`${quest.brand} logo`}
         width={96}
         height={96}
-        className="size-20 rounded-lg object-cover sm:size-24"
+        className="size-20  object-cover sm:size-24"
       />
       <div className="min-w-0">
         <h2 className="truncate text-2xl font-semibold">{quest.title}</h2>
-        <p className="mt-2 text-white/55">{quest.brand}</p>
-        <div className="mt-2 flex flex-wrap items-center gap-x-8 gap-y-2 text-sm text-white/65">
+        <p className="mt-2 text-muted-foreground">{quest.brand}</p>
+        <div className="mt-2 flex flex-wrap items-center gap-x-8 gap-y-2 text-sm text-muted-foreground">
           <span className="flex items-center gap-2">
             <BriefcaseBusiness className="size-4" />
             Product Quest
@@ -280,10 +280,10 @@ function QuestRow({
             <span
               className={
                 quest.status === "Submitted"
-                  ? "text-[#B78CFF]"
+                  ? "text-foreground"
                   : quest.status === "Reviewing"
                     ? "text-[#D8BD63]"
-                    : "text-white/65"
+                    : "text-muted-foreground"
               }
             >
               {quest.status}
@@ -300,13 +300,13 @@ function QuestRow({
           <button
             type="button"
             onClick={onSubmitFeedback}
-            className="inline-flex items-center justify-center gap-2 rounded-xl bg-[linear-gradient(135deg,#9011FF_0%,#B78CFF_100%)] px-4 py-2 text-sm font-semibold text-white shadow-md transition-transform hover:opacity-95 active:scale-[0.98]"
+            className="inline-flex items-center justify-center gap-2  bg-[linear-gradient(135deg,#9011FF_0%,#B78CFF_100%)] px-4 py-2 text-sm font-semibold text-foreground shadow-md transition-transform hover:opacity-95 active:scale-[0.98]"
           >
             <Send className="size-3.5" />
             Submit Feedback
           </button>
         ) : (
-          <span className="text-xs text-white/40">Submission Recorded</span>
+          <span className="text-xs text-muted-foreground">Submission Recorded</span>
         )}
       </div>
     </article>
@@ -329,12 +329,12 @@ function Pagination({
   return (
     <div className="mt-auto flex flex-col items-center pt-12">
       <nav
-        className="flex items-center justify-center gap-6 text-sm text-white"
+        className="flex items-center justify-center gap-6 text-sm text-foreground"
         aria-label="All quest pages"
       >
         <button
           type="button"
-          className="flex items-center gap-1 text-white/80 transition-colors hover:text-white disabled:cursor-not-allowed disabled:text-white/30"
+          className="flex items-center gap-1 text-muted-foreground transition-colors hover:text-foreground disabled:cursor-not-allowed disabled:text-foreground/30"
           disabled={currentPage === 1}
           onClick={() => goToPage(currentPage - 1)}
         >
@@ -353,7 +353,7 @@ function Pagination({
                 className={
                   isActive
                     ? "rounded-md border border-white/45 px-3 py-2"
-                    : "text-white/80 transition-colors hover:text-white"
+                    : "text-muted-foreground transition-colors hover:text-foreground"
                 }
                 aria-current={isActive ? "page" : undefined}
                 onClick={() => goToPage(page)}
@@ -364,11 +364,11 @@ function Pagination({
           },
         )}
 
-        <span className="text-white/70">...</span>
+        <span className="text-muted-foreground">...</span>
 
         <button
           type="button"
-          className="flex items-center gap-1 text-white/80 transition-colors hover:text-white disabled:cursor-not-allowed disabled:text-white/30"
+          className="flex items-center gap-1 text-muted-foreground transition-colors hover:text-foreground disabled:cursor-not-allowed disabled:text-foreground/30"
           disabled={currentPage === totalPages}
           onClick={() => goToPage(currentPage + 1)}
         >

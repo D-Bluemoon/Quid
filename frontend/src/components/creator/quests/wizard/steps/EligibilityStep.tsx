@@ -80,7 +80,7 @@ export default function EligibilityStep({
         <button
           type="button"
           onClick={() => setAdvancedOpen((prev) => !prev)}
-          className="flex items-center gap-1.5 text-sm font-medium text-white/70 transition-colors hover:text-white"
+          className="flex items-center gap-1.5 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
         >
           Advanced eligibility
           {advancedOpen ? (

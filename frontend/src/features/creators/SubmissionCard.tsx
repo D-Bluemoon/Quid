@@ -34,12 +34,12 @@ export default function SubmissionCard({
   return (
     <div className="p-2 md:p-3">
       <div>
-        <div className="flex flex-col md:flex-row justify-between items-start md:items-center bg-[#141026] rounded-2xl p-3 md:p-4 m-2 md:m-4 gap-4 md:gap-0">
+        <div className="flex flex-col md:flex-row justify-between items-start md:items-center brutal-border brutal-shadow bg-card  p-3 md:p-4 m-2 md:m-4 gap-4 md:gap-0">
           <div className="flex flex-col gap-3 w-full md:w-auto">
-            <h2 className="text-lg md:text-xl text-white font-medium">
+            <h2 className="text-lg md:text-xl text-foreground font-medium">
               It&apos;s time to select the winners
             </h2>
-            <p className="text-[#CFC9FF] text-xs md:text-sm flex items-center gap-2">
+            <p className="text-foreground text-xs md:text-sm flex items-center gap-2">
               Click this{" "}
               <span>
                 <Image
@@ -54,14 +54,14 @@ export default function SubmissionCard({
             </p>
           </div>
           <div className="flex flex-col gap-2 w-full md:w-auto">
-            <h4 className="text-xs md:text-sm text-white">Winners selected</h4>
-            <p className="text-white font-semibold text-lg md:text-2xl md:text-right">
-              8/ <span className="text-[#CFC9FF]">24</span>
+            <h4 className="text-xs md:text-sm text-foreground">Winners selected</h4>
+            <p className="text-foreground font-semibold text-lg md:text-2xl md:text-right">
+              8/ <span className="text-foreground">24</span>
             </p>
           </div>
         </div>
         <div className="flex flex-col gap-3 pt-6">
-          <div className="flex flex-col md:flex-row justify-between items-start md:items-center text-white px-2 md:px-4 gap-4 md:gap-0 w-full">
+          <div className="flex flex-col md:flex-row justify-between items-start md:items-center text-foreground px-2 md:px-4 gap-4 md:gap-0 w-full">
             <div className="flex items-center gap-2 flex-1">
               <Image
                 src="/quest-detail/avatar-quid.png"
@@ -72,7 +72,7 @@ export default function SubmissionCard({
               />
               <div className="flex flex-col gap-1 flex-1">
                 <p className="text-sm md:text-base font-medium">{submission.user}</p>
-                <p className="text-[#CFC9FF] text-xs md:text-sm">
+                <p className="text-foreground text-xs md:text-sm">
                   Submitted{" "}
                   {typeof submission.date === "object"
                     ? submission.date.toLocaleDateString()
@@ -94,7 +94,7 @@ export default function SubmissionCard({
                 <>
                   <button
                     onClick={onApprove}
-                    className="bg-[#9011FF] hover:bg-[#7d0dd4] text-white px-3 py-1 rounded-lg text-sm font-medium transition-colors"
+                    className="brutal-border brutal-shadow bg-brutal-pink hover:translate-x-[-1px] hover:translate-y-[-1px] text-foreground px-3 py-1  text-sm font-medium transition-colors"
                     title="Approve submission"
                   >
                     ✓ Approve
@@ -102,7 +102,7 @@ export default function SubmissionCard({
                   {onReject && (
                     <button
                       onClick={onReject}
-                      className="border border-red-500/50 text-red-400 hover:bg-red-500/10 px-3 py-1 rounded-lg text-sm font-medium transition-colors"
+                      className="border border-red-500/50 text-red-400 hover:bg-red-500/10 px-3 py-1  text-sm font-medium transition-colors"
                       title="Reject submission"
                     >
                       ✕ Reject
@@ -112,7 +112,7 @@ export default function SubmissionCard({
               )}
 
               {submission.status === "rejected" && (
-                <span className="px-3 py-1 rounded-lg text-sm font-medium bg-red-500/10 text-red-400 border border-red-500/30">
+                <span className="px-3 py-1  text-sm font-medium bg-red-500/10 text-red-400 border border-red-500/30">
                   Rejected
                 </span>
               )}
@@ -127,7 +127,7 @@ export default function SubmissionCard({
                 }
                 className={`rounded-full p-1 md:p-2 transition-colors ${
                   isWinnerSelected
-                    ? "bg-[#9011FF]"
+                    ? "brutal-border brutal-shadow bg-brutal-pink"
                     : "hover:opacity-80"
                 }`}
                 aria-label="Select as winner"

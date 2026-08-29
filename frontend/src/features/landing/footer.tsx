@@ -166,7 +166,7 @@ export default function Footer() {
             />
             <button
               type="submit"
-              className="bg-purple-600 hover:bg-purple-700 text-white font-semibold py-2.5 px-4 rounded-lg transition-colors duration-300 text-sm sm:text-base"
+              className="cursor-pointer bg-purple-600 hover:bg-purple-700 text-white font-semibold py-2.5 px-4 rounded-lg transition-colors duration-300 text-sm sm:text-base"
             >
               {subscribed ? "Subscribed! ✓" : "Subscribe"}
             </button>

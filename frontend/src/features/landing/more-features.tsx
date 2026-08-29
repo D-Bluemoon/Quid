@@ -2,20 +2,20 @@
 
 import Image from "next/image";
 import { motion, Variants } from "framer-motion";
+import { brutalBtnPrimary } from "@/lib/brutalist-classes";
 
 const badges = [
   {
     text: "Get community-verified insights",
-    className: "left-6 top-[-30px] px-[20px] py-[15px] w-[300px]",
+    className: "left-6 top-[-30px] px-5 py-4 w-[300px] bg-brutal-cyan",
   },
   {
     text: "Exportable feedback data",
-    className:
-      "right-[30] top-[52%] -translate-y-1/2 px-[20px] py-[20px] w-[178px]",
+    className: "right-[30px] top-[52%] -translate-y-1/2 px-5 py-4 w-[200px] bg-brutal-yellow",
   },
   {
     text: "Create quest-based surveys",
-    className: "left-[-20] bottom-[-10] px-[20px] py-[20px] w-[300px]",
+    className: "left-[-20px] bottom-[-10px] px-5 py-4 w-[300px] bg-brutal-lime",
   },
 ];
 
@@ -23,10 +23,7 @@ const containerVariants: Variants = {
   hidden: { opacity: 0 },
   visible: {
     opacity: 1,
-    transition: {
-      staggerChildren: 0.2,
-      delayChildren: 0.1,
-    },
+    transition: { staggerChildren: 0.2, delayChildren: 0.1 },
   },
 };
 
@@ -68,15 +65,8 @@ const badgeVariants: Variants = {
 
 export default function MoreFeatures() {
   return (
-    <section className="relative overflow-hidden pb-24 pt-12 text-white">
-      {/* Background gradient elements */}
-      <div className="pointer-events-none absolute inset-0">
-        <div className="absolute right-[-150px] top-1/2 h-[600px] w-[600px] rounded-full bg-indigo-500/15 blur-[140px]" />
-        <div className="absolute left-[-150px] bottom-0 h-[500px] w-[500px] rounded-full bg-purple-500/20 blur-[120px]" />
-      </div>
-
+    <section className="relative overflow-hidden pb-24 pt-12 text-foreground">
       <div className="relative mx-auto flex w-full max-w-6xl flex-col gap-12 px-6 md:max-w-3xl lg:max-w-6xl lg:flex-row lg:items-center">
-        {/* Left Side - Image with Badges */}
         <motion.div
           className="relative w-full md:flex md:justify-center md:items-center lg:w-[45%]"
           variants={containerVariants}
@@ -84,27 +74,22 @@ export default function MoreFeatures() {
           whileInView="visible"
           viewport={{ once: true, amount: 0.3 }}
         >
-          {/* Image Container */}
           <motion.div
-            className="relative mx-auto h-[536px] w-full max-w-[373px] overflow-hidden rounded-3xl p-3 shadow-[0_30px_80px_rgba(11,6,30,0.5)] group"
+            className="relative mx-auto h-[536px] w-full max-w-[373px] brutal-border brutal-shadow-lg overflow-hidden bg-card p-2"
             variants={imageVariants}
-            whileHover={{ scale: 1.02 }}
+            whileHover={{ translate: "-2px -2px" }}
             transition={{ duration: 0.3 }}
           >
-            {/* Image glow effect */}
-            <div className="absolute inset-0 rounded-3xl bg-gradient-to-r from-purple-500/20 to-indigo-500/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10 pointer-events-none" />
-
             <Image
               src="/image.png"
               alt="Community feedback"
               width={373}
               height={536}
-              className="h-full w-full rounded-[28px] object-cover -scale-x-100"
+              className="h-full w-full object-cover -scale-x-100"
               priority
             />
           </motion.div>
 
-          {/* Desktop Badges */}
           <motion.div
             className="hidden lg:block"
             variants={containerVariants}
@@ -117,14 +102,13 @@ export default function MoreFeatures() {
                 key={badge.text}
                 custom={idx}
                 variants={badgeVariants}
-                className={`absolute ${badge.className} rounded-[12px] border border-white/10 bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-xl text-[18px] text-white font-medium shadow-[0_18px_40px_rgba(7,4,20,0.5)] hover:border-white/20 hover:bg-gradient-to-br hover:from-white/15 hover:to-white/10 transition-all duration-300 cursor-pointer`}
+                className={`absolute ${badge.className} brutal-border brutal-shadow text-sm font-bold uppercase tracking-wide text-foreground`}
               >
                 {badge.text}
               </motion.div>
             ))}
           </motion.div>
 
-          {/* Mobile Badges */}
           <motion.div
             className="mt-4 flex flex-col items-center gap-3 lg:hidden"
             variants={containerVariants}
@@ -137,7 +121,7 @@ export default function MoreFeatures() {
                 key={badge.text}
                 custom={idx}
                 variants={badgeVariants}
-                className="w-full rounded-[12px] border border-white/10 bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-xl px-5 py-4 text-sm font-semibold text-white shadow-[0_18px_40px_rgba(7,4,20,0.5)] hover:border-white/20 transition-all duration-300"
+                className={`w-full brutal-border brutal-shadow px-5 py-4 text-sm font-bold uppercase tracking-wide text-foreground ${badge.className.split(" ").find((c) => c.startsWith("bg-")) ?? "bg-brutal-cyan"}`}
               >
                 {badge.text}
               </motion.div>
@@ -145,7 +129,6 @@ export default function MoreFeatures() {
           </motion.div>
         </motion.div>
 
-        {/* Right Side - Content */}
         <motion.div
           className="w-full space-y-6 lg:w-[55%]"
           variants={contentVariants}
@@ -154,10 +137,12 @@ export default function MoreFeatures() {
           viewport={{ once: true, amount: 0.3 }}
         >
           <motion.h2
-            className="text-3xl font-semibold lg:text-5xl leading-tight"
+            className="text-3xl font-black uppercase leading-tight lg:text-5xl"
             variants={headingVariants}
           >
-            Everything You Need to Run Community-Verified Feedback Quests
+            Everything You Need to Run{" "}
+            <span className="bg-brutal-yellow px-2">Community-Verified</span>{" "}
+            Feedback Quests
           </motion.h2>
 
           <motion.div
@@ -167,31 +152,19 @@ export default function MoreFeatures() {
             whileInView="visible"
             viewport={{ once: true, amount: 0.3 }}
           >
-            <motion.p
-              className="text-base text-white/65"
-              variants={headingVariants}
-            >
-              Create stellar products using real feedback from real community
-              users.
+            <motion.p className="text-base font-medium text-muted-foreground" variants={headingVariants}>
+              Create stellar products using real feedback from real community users.
             </motion.p>
-            <motion.p
-              className="text-base text-white/55"
-              variants={headingVariants}
-            >
-              Quid helps Stellar creators validate ideas faster by turning their
-              community into contributors. Create quests, gate access with NFTs or
-              product access, collect structured feedback, and reward participants
-              — all without friction.
+            <motion.p className="text-base text-muted-foreground" variants={headingVariants}>
+              Quid helps Stellar creators validate ideas faster by turning their community
+              into contributors. Create quests, gate access, collect structured feedback,
+              and reward participants — all without friction.
             </motion.p>
           </motion.div>
 
           <motion.button
-            className="h-[44px] w-[149px] rounded-[12px] border border-[#B159FF] bg-[#9011FF] text-sm font-inter font-semibold cursor-pointer text-white shadow-[0_0_12.1px_4px_rgba(177,89,255,0.15)] transition"
-            whileHover={{
-              scale: 1.05,
-              boxShadow: "0 0 20px rgba(144, 17, 255, 0.5)",
-            }}
-            whileTap={{ scale: 0.95 }}
+            className={brutalBtnPrimary}
+            whileTap={{ scale: 0.98 }}
             variants={headingVariants}
           >
             Create a Quest

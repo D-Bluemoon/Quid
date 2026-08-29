@@ -1,7 +1,7 @@
 import { signFreighterTransaction } from "@/lib/freighter-wallet";
+import { getApiBaseUrl } from "@/lib/api-base";
 import type { Networks } from "@stellar/stellar-sdk";
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL?.replace(/\/$/, "");
 const SESSION_KEY = "quid_creator_auth";
 
 interface CreatorSession {
@@ -19,11 +19,8 @@ interface VerifyResponse {
 }
 
 function getApiUrl(path: string): string {
-  if (!API_URL) {
-    throw new Error("NEXT_PUBLIC_API_URL is not configured");
-  }
-
-  return `${API_URL}${path.startsWith("/") ? path : `/${path}`}`;
+  const base = getApiBaseUrl();
+  return `${base}${path.startsWith("/") ? path : `/${path}`}`;
 }
 
 /**
@@ -32,7 +29,10 @@ function getApiUrl(path: string): string {
  * use this to fall back to the localStorage-only behaviour instead of throwing.
  */
 export function isApiConfigured(): boolean {
-  return Boolean(API_URL);
+  // Explicit localhost URL pointing at a dead port should still allow fallback.
+  if (process.env.NEXT_PUBLIC_API_URL) return true;
+  if (typeof window !== "undefined") return true;
+  return false;
 }
 
 /**

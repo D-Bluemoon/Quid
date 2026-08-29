@@ -27,15 +27,15 @@ export default function TopNav() {
     pathname === href || (href !== "/hunter" && pathname.startsWith(href));
 
   return (
-    <header className="shrink-0 border-b border-white/10 bg-[#0D0B10]/95 backdrop-blur">
+    <header className="shrink-0 border-b-[3px] border-foreground bg-card">
       <div className="flex h-20 items-center justify-between px-5 sm:px-8 lg:px-12">
-        <nav className="hidden items-center gap-10 text-sm text-white/70 lg:flex">
+        <nav className="hidden items-center gap-10 text-sm text-muted-foreground lg:flex">
           {topNavItems.map((item) => (
             <Link
               key={item.href}
               href={item.href}
-              className={`transition-colors hover:text-white ${
-                isActive(item.href) ? "text-white" : ""
+              className={`transition-colors hover:text-foreground ${
+                isActive(item.href) ? "text-foreground" : ""
               }`}
             >
               {item.label}
@@ -44,7 +44,7 @@ export default function TopNav() {
         </nav>
 
         <div className="ml-auto flex items-center gap-4 text-sm font-semibold">
-          <Bell className="hidden size-5 text-white/85 sm:block" />
+          <Bell className="hidden size-5 text-foreground sm:block" />
           <span className="flex items-center gap-1">
             <Image
               src="/dashboard/Star.svg"

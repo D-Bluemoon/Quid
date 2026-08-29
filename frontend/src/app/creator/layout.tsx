@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import Sidebar from "@/components/creator/Sidebar";
 import TopNav from "@/components/creator/TopNav";
 import RequireRole from "@/components/auth/RequireRole";
+import { brutalDashboard } from "@/lib/brutalist-classes";
 
 export default function DashboardLayout({
   children,
@@ -29,10 +30,12 @@ export default function DashboardLayout({
 
   if (!checked) {
     return (
-      <div className="flex h-screen items-center justify-center bg-[#0D0B10] text-white">
-        <div className="text-center">
-          <div className="mx-auto mb-4 h-8 w-8 animate-spin rounded-full border-2 border-[#9011FF] border-t-transparent" />
-          <p className="text-sm text-[#8C86B8]">Checking wallet connection…</p>
+      <div className={`${brutalDashboard} items-center justify-center`}>
+        <div className="brutal-border brutal-shadow bg-card p-8 text-center">
+          <div className="mx-auto mb-4 h-8 w-8 animate-spin border-[3px] border-foreground border-t-brutal-pink" />
+          <p className="text-sm font-bold uppercase tracking-wide text-muted-foreground">
+            Checking wallet connection…
+          </p>
         </div>
       </div>
     );
@@ -43,16 +46,12 @@ export default function DashboardLayout({
   }
 
   return (
-    // Issue #331: the wallet check above proves the session; this makes the
-    // creator dashboard respect the role the server holds for that wallet.
     <RequireRole role="creator">
-      <div className="flex h-screen overflow-x-hidden bg-[#0D0B10] text-white">
+      <div className={`${brutalDashboard} overflow-x-hidden`}>
         <Sidebar />
         <div className="flex min-w-0 flex-1 flex-col">
           <TopNav />
-          <main className="min-w-0 flex-1 overflow-y-auto bg-[#0D0B10]">
-            {children}
-          </main>
+          <main className="min-w-0 flex-1 overflow-y-auto">{children}</main>
         </div>
       </div>
     </RequireRole>

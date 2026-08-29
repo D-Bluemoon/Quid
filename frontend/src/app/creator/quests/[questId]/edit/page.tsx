@@ -79,18 +79,18 @@ export default function EditQuestPage({ params }: { params: Promise<{ questId: s
   };
 
   return (
-    <div className="min-h-screen bg-[#0f0a1a] text-white p-4 md:p-8">
+    <div className="min-h-screen bg-[#0f0a1a] text-foreground p-4 md:p-8">
       <div className="max-w-2xl mx-auto">
         {/* Header */}
         <div className="mb-8">
           <h1 className="text-3xl md:text-4xl font-bold mb-2">Edit Quest</h1>
-          <p className="text-[#CFC9FF]">Quest ID: {questId}</p>
+          <p className="text-foreground">Quest ID: {questId}</p>
         </div>
 
         {/* Notification toast */}
         {notification && (
           <div
-            className={`flex items-center gap-2 mb-4 px-4 py-3 rounded-xl text-sm ${
+            className={`flex items-center gap-2 mb-4 px-4 py-3  text-sm ${
               notification.type === "success"
                 ? "bg-green-500/10 border border-green-500/30 text-green-300"
                 : "bg-red-500/10 border border-red-500/30 text-red-300"
@@ -106,7 +106,7 @@ export default function EditQuestPage({ params }: { params: Promise<{ questId: s
         )}
 
         {/* Form */}
-        <form onSubmit={handleSubmit} className="bg-[#141026] rounded-2xl p-6 md:p-8 space-y-6">
+        <form onSubmit={handleSubmit} className="brutal-border brutal-shadow bg-card  p-6 md:p-8 space-y-6">
           {/* Title */}
           <div>
             <label className="block text-sm font-medium mb-2">Quest Title</label>
@@ -115,7 +115,7 @@ export default function EditQuestPage({ params }: { params: Promise<{ questId: s
               name="title"
               value={formData.title}
               onChange={handleChange}
-              className="w-full bg-[#1B1540] border border-[#241B4A] rounded-lg px-4 py-2 text-white focus:outline-none focus:border-[#9011FF]"
+              className="w-full brutal-border bg-background border border-foreground  px-4 py-2 text-foreground focus:outline-none focus:border-[#9011FF]"
               placeholder="Enter quest title"
               required
             />
@@ -129,7 +129,7 @@ export default function EditQuestPage({ params }: { params: Promise<{ questId: s
               value={formData.description}
               onChange={handleChange}
               rows={5}
-              className="w-full bg-[#1B1540] border border-[#241B4A] rounded-lg px-4 py-2 text-white focus:outline-none focus:border-[#9011FF] resize-none"
+              className="w-full brutal-border bg-background border border-foreground  px-4 py-2 text-foreground focus:outline-none focus:border-[#9011FF] resize-none"
               placeholder="Enter quest description"
             />
           </div>
@@ -142,7 +142,7 @@ export default function EditQuestPage({ params }: { params: Promise<{ questId: s
               name="reward"
               value={formData.reward}
               onChange={handleChange}
-              className="w-full bg-[#1B1540] border border-[#241B4A] rounded-lg px-4 py-2 text-white focus:outline-none focus:border-[#9011FF]"
+              className="w-full brutal-border bg-background border border-foreground  px-4 py-2 text-foreground focus:outline-none focus:border-[#9011FF]"
               placeholder="Enter reward amount"
             />
           </div>
@@ -155,7 +155,7 @@ export default function EditQuestPage({ params }: { params: Promise<{ questId: s
               name="deadline"
               value={formData.deadline}
               onChange={handleChange}
-              className="w-full bg-[#1B1540] border border-[#241B4A] rounded-lg px-4 py-2 text-white focus:outline-none focus:border-[#9011FF]"
+              className="w-full brutal-border bg-background border border-foreground  px-4 py-2 text-foreground focus:outline-none focus:border-[#9011FF]"
             />
           </div>
 
@@ -164,14 +164,14 @@ export default function EditQuestPage({ params }: { params: Promise<{ questId: s
             <button
               type="submit"
               disabled={isLoading}
-              className="flex-1 bg-[#9011FF] hover:bg-[#7d0dd4] disabled:opacity-50 text-white font-semibold py-3 rounded-lg transition-colors duration-200"
+              className="flex-1 brutal-border brutal-shadow bg-brutal-pink hover:translate-x-[-1px] hover:translate-y-[-1px] disabled:opacity-50 text-foreground font-semibold py-3  transition-colors duration-200"
             >
               {isLoading ? "Saving..." : "Save Changes"}
             </button>
             <button
               type="button"
               onClick={handleCancel}
-              className="flex-1 bg-[#241B4A] hover:bg-[#2d2453] text-white font-semibold py-3 rounded-lg transition-colors duration-200"
+              className="flex-1 bg-[#241B4A] hover:bg-[#2d2453] text-foreground font-semibold py-3  transition-colors duration-200"
             >
               Cancel
             </button>

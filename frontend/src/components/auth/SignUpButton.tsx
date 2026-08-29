@@ -17,8 +17,8 @@ export default function SignUpButton({
 
   const baseStyles =
     variant === 'nav'
-      ? 'bg-[#9011FF] rounded-[12px] px-7 py-3 text-lg font-semibold shadow-lg shadow-violet-500/30 hover:bg-purple-700'
-      : 'bg-[#9011FF] hover:bg-purple-700 text-white rounded-full px-6 py-2 font-semibold';
+      ? 'brutal-border brutal-shadow bg-brutal-pink px-7 py-3 text-sm font-black uppercase tracking-wide text-foreground hover:translate-x-[-2px] hover:translate-y-[-2px]'
+      : 'brutal-border brutal-shadow bg-brutal-yellow px-6 py-2 text-sm font-black uppercase tracking-wide text-foreground';
 
   const handleClick = () => {
     router.push(ONBOARDING_ROUTES.signUp);
@@ -28,7 +28,7 @@ export default function SignUpButton({
     <button
       type="button"
       onClick={handleClick}
-      className={`inline-flex items-center justify-center gap-2 text-white transition-colors cursor-pointer ${baseStyles} ${className}`}
+      className={`inline-flex items-center justify-center gap-2 cursor-pointer transition ${baseStyles} ${className}`}
     >
       <UserPlus className="h-5 w-5" />
       <span>Sign Up</span>

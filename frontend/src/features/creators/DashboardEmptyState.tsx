@@ -21,12 +21,12 @@ export const EmptyState: React.FC<EmptyStateProps> = ({
       <div className="bg-[#1a1a2e] rounded-full p-6 mb-4">
         {icon || <FileText className="w-12 h-12 text-gray-500" />}
       </div>
-      <h3 className="text-xl font-semibold text-white mb-2">{title}</h3>
+      <h3 className="text-xl font-semibold text-foreground mb-2">{title}</h3>
       <p className="text-gray-400 text-center max-w-md mb-6">{description}</p>
       {actionLabel && onAction && (
         <button
           onClick={onAction}
-          className="bg-gradient-to-r from-purple-600 to-purple-500 hover:from-purple-700 hover:to-purple-600 text-white px-6 py-3 rounded-lg font-medium shadow-lg shadow-purple-500/50 hover:shadow-purple-500/70 transition-all duration-200 flex items-center space-x-2"
+          className="bg-gradient-to-r from-purple-600 to-purple-500 hover:from-purple-700 hover:to-purple-600 text-foreground px-6 py-3  font-medium shadow-lg  hover:shadow-purple-500/70 transition-all duration-200 flex items-center space-x-2"
         >
           <Plus className="w-5 h-5" />
           <span>{actionLabel}</span>

@@ -29,20 +29,20 @@ export const CreatorQuestCard: React.FC<CreatorQuestCardProps> = ({
   icon = "/namelogo.png",
 }) => {
   const content = (
-    <article className="grid gap-5 sm:grid-cols-[96px_1fr_auto] sm:items-center">
+    <article className="grid gap-5 brutal-border brutal-shadow bg-card p-4 sm:grid-cols-[96px_1fr_auto] sm:items-center">
       <Image
         src={icon}
         alt=""
         width={96}
         height={96}
-        className="size-20 rounded-lg object-cover sm:size-24"
+        className="size-20 brutal-border object-cover sm:size-24"
       />
       <div className="min-w-0">
-        <h2 className="truncate text-2xl font-semibold text-white transition-colors group-hover:text-[#B78CFF]">
+        <h2 className="truncate text-xl font-black uppercase tracking-tight text-foreground transition-colors group-hover:text-brutal-violet sm:text-2xl">
           {title}
         </h2>
-        <p className="mt-2 text-white/55">{brand}</p>
-        <div className="mt-2 flex flex-wrap items-center gap-x-8 gap-y-2 text-sm text-white/65">
+        <p className="mt-2 text-muted-foreground">{brand}</p>
+        <div className="mt-2 flex flex-wrap items-center gap-x-8 gap-y-2 text-sm text-muted-foreground">
           <span className="flex items-center gap-2">
             <Image
               src={briefcaseIcon}
@@ -66,9 +66,9 @@ export const CreatorQuestCard: React.FC<CreatorQuestCardProps> = ({
           <span>{dueDate}</span>
         </div>
       </div>
-      <div className="text-3xl font-bold text-white">
+      <div className="text-3xl font-black text-foreground">
         {submissionCount.current}
-        <span className="text-white/40"> / {submissionCount.total}</span>
+        <span className="text-muted-foreground"> / {submissionCount.total}</span>
       </div>
     </article>
   );

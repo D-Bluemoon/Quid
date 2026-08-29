@@ -6,8 +6,8 @@ import QuestRowMenu from "./QuestRowMenu";
 import type { QuestRowData } from "./types";
 
 const TAG_STYLES: Record<QuestRowData["tagVariant"], string> = {
-  active: "bg-[#8B5CF6]/20 text-[#B78CFF]",
-  draft: "bg-white/10 text-white/60",
+  active: "bg-[#8B5CF6]/20 text-foreground",
+  draft: "bg-white/10 text-muted-foreground",
   completed: "bg-emerald-500/15 text-emerald-400",
 };
 
@@ -51,19 +51,19 @@ export default function QuestRow({ quest }: { quest: QuestRowData }) {
     <div className="flex items-start gap-4 py-4 sm:items-center">
       <Link
         href={`/creator/quests/${quest.id}`}
-        className="flex min-w-0 flex-1 items-start gap-4 rounded-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#8B5CF6] sm:items-center"
+        className="flex min-w-0 flex-1 items-start gap-4  focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#8B5CF6] sm:items-center"
       >
         <Image
           src="/namelogo.png"
           alt=""
           width={56}
           height={56}
-          className="size-12 shrink-0 rounded-lg object-cover sm:size-14"
+          className="size-12 shrink-0  object-cover sm:size-14"
         />
 
         <div className="min-w-0 flex-1">
           <div className="flex flex-wrap items-center gap-2">
-            <h3 className="truncate text-base font-semibold text-white">
+            <h3 className="truncate text-base font-semibold text-foreground">
               {quest.title}
             </h3>
             <span
@@ -73,11 +73,11 @@ export default function QuestRow({ quest }: { quest: QuestRowData }) {
               {quest.tagLabel}
             </span>
           </div>
-          <p className="mt-0.5 text-sm text-white/40">
+          <p className="mt-0.5 text-sm text-muted-foreground">
             {quest.category} • {quest.tagLabel}
           </p>
 
-          <div className="mt-2 flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-white/50">
+          <div className="mt-2 flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-muted-foreground">
             <span className="flex items-center gap-1.5">
               <Image
                 src={stellarIcon}
@@ -86,7 +86,7 @@ export default function QuestRow({ quest }: { quest: QuestRowData }) {
                 height={14}
                 className="h-3.5 w-3.5"
               />
-              <span className="font-medium text-white/80">
+              <span className="font-medium text-muted-foreground">
                 {quest.pool} XLM
               </span>{" "}
               Pool
@@ -99,7 +99,7 @@ export default function QuestRow({ quest }: { quest: QuestRowData }) {
                 height={14}
                 className="h-3.5 w-3.5"
               />
-              <span className="font-medium text-white/80">
+              <span className="font-medium text-muted-foreground">
                 {quest.perWinner} XLM
               </span>{" "}
               Per winner
@@ -113,7 +113,7 @@ export default function QuestRow({ quest }: { quest: QuestRowData }) {
       <div className="flex shrink-0 items-center gap-2">
         <Link
           href={primaryAction.href(quest.id)}
-          className="rounded-md border border-white/15 px-3 py-1.5 text-sm text-white transition-colors hover:bg-white/5"
+          className="rounded-md border border-white/15 px-3 py-1.5 text-sm text-foreground transition-colors hover:bg-white/5"
         >
           {primaryAction.label}
         </Link>

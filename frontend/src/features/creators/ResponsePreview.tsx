@@ -17,7 +17,7 @@ export const ResponsePreview: React.FC<ResponsePreviewProps> = ({
   timeSinceSubmission,
 }) => {
   return (
-    <div className="flex items-center p-2 sm:p-3 rounded-lg hover:bg-[#1a1a2e]/50 transition-colors cursor-pointer group">
+    <div className="flex items-center p-2 sm:p-3  hover:bg-[#1a1a2e]/50 transition-colors cursor-pointer group">
       <div className="flex items-center space-x-2 sm:space-x-3 flex-1 min-w-0">
         {/* Avatar */}
         <div className="relative flex-shrink-0">
@@ -32,12 +32,12 @@ export const ResponsePreview: React.FC<ResponsePreviewProps> = ({
 
         <div className="flex-1 min-w-0">
           <div className="flex items-center justify-between gap-2">
-            <p className="text-white font-medium text-xs sm:text-sm group-hover:text-purple-400 transition-colors">
+            <p className="text-foreground font-medium text-xs sm:text-sm group-hover:text-brutal-violet transition-colors">
               {respondentName}
             </p>
-            <span className="text-[#CFC9FF] text-xs whitespace-nowrap flex-shrink-0">{timeSinceSubmission}</span>
+            <span className="text-foreground text-xs whitespace-nowrap flex-shrink-0">{timeSinceSubmission}</span>
           </div>
-          <p className="text-[#CFC9FF] text-xs truncate mt-0.5">
+          <p className="text-foreground text-xs truncate mt-0.5">
             {questTitle}
           </p>
         </div>

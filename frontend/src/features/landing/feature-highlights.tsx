@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import { motion, Variants } from "framer-motion";
+import { brutalCardColors } from "@/lib/brutalist";
 
 const featureItems = [
   { title: "Custom Template", icon: "/Frame 56.png" },
@@ -30,78 +31,49 @@ const headingVariants: Variants = {
 };
 
 const itemVariants: Variants = {
-  hidden: { opacity: 0, y: 30, scale: 0.9 },
+  hidden: { opacity: 0, y: 30 },
   visible: {
     opacity: 1,
     y: 0,
-    scale: 1,
     transition: { duration: 0.6, ease: "easeOut" },
-  },
-  hover: {
-    y: -10,
-    transition: { duration: 0.3 },
-  },
-};
-
-const iconVariants: Variants = {
-  hidden: { scale: 0.8, opacity: 0 },
-  visible: {
-    scale: 1,
-    opacity: 1,
-    transition: { duration: 0.6, delay: 0.2 },
   },
 };
 
 export default function FeatureHighlights() {
   return (
-    <section className="relative overflow-hidden py-24 text-white">
-      {/* Background gradient elements */}
-      <div className="pointer-events-none absolute inset-0">
-        <div className="absolute left-[-200px] top-1/3 h-[500px] w-[500px] rounded-full bg-purple-500/20 blur-[120px]" />
-        <div className="absolute right-[-200px] bottom-1/3 h-[500px] w-[500px] rounded-full bg-indigo-500/15 blur-[120px]" />
-      </div>
-
+    <section className="relative overflow-hidden py-24 text-foreground">
       <motion.div
-        className="relative mx-auto flex w-full max-w-5xl flex-col items-center gap-10 px-6 pt-10 pb-30 text-center cursor-default md:max-w-3xl lg:max-w-5xl"
+        className="relative mx-auto flex w-full max-w-5xl flex-col items-center gap-10 px-6 pt-10 pb-30 text-center md:max-w-3xl lg:max-w-5xl"
         variants={containerVariants}
         initial="hidden"
         whileInView="visible"
         viewport={{ once: true, amount: 0.3 }}
       >
-        {/* Heading Section */}
         <motion.div
-          className="space-y-4 max-w-3xl"
+          className="max-w-3xl space-y-4"
           variants={containerVariants}
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, amount: 0.3 }}
         >
           <motion.h2
-            className="font-semibold text-4xl lg:text-5xl leading-tight"
+            className="text-4xl font-black uppercase leading-tight lg:text-5xl"
             variants={headingVariants}
           >
-            Save time, work smarter, get{" "}
-            <motion.span
-              className="inline-block bg-gradient-to-r from-purple-400 to-indigo-400 bg-clip-text text-transparent"
-              initial={{ opacity: 0 }}
-              whileInView={{ opacity: 1 }}
-              transition={{ duration: 0.6, delay: 0.2 }}
-            >
-              answers.
-            </motion.span>
+            Save time. Work smarter. Get{" "}
+            <span className="bg-brutal-cyan px-2">answers.</span>
           </motion.h2>
           <motion.p
-            className="max-w-2xl font-inter text-base text-center text-white/65 mx-auto"
+            className="mx-auto max-w-2xl text-base font-medium text-muted-foreground"
             variants={headingVariants}
           >
-            From quick user experience tests to in-depth interviews, Quid
-            delivers insights with real feedback, real quick.
+            From quick UX tests to in-depth interviews — real feedback, real
+            quick.
           </motion.p>
         </motion.div>
 
-        {/* Features Grid */}
         <motion.div
-          className="grid w-full max-w-3xl gap-12 md:grid-cols-3"
+          className="grid w-full max-w-3xl gap-6 md:grid-cols-3"
           variants={containerVariants}
           initial="hidden"
           whileInView="visible"
@@ -110,56 +82,23 @@ export default function FeatureHighlights() {
           {featureItems.map((feature, idx) => (
             <motion.div
               key={feature.title}
-              className="flex flex-col items-center gap-4 text-center cursor-pointer"
+              className="brutal-border brutal-shadow flex flex-col items-center gap-4 bg-card p-6 text-center"
+              style={{ backgroundColor: brutalCardColors[idx] }}
               variants={itemVariants}
-              whileHover="hover"
+              whileHover={{ translate: "-2px -2px" }}
             >
-              {/* Icon Container with background glow */}
-              <motion.div
-                className="relative flex h-24 w-24 items-center justify-center"
-                variants={iconVariants}
-              >
-                {/* Background glow effect */}
-                <motion.div
-                  className="absolute inset-0 rounded-full bg-purple-500/20 blur-xl"
-                  animate={{
-                    scale: [1, 1.1, 1],
-                    opacity: [0.5, 0.7, 0.5],
-                  }}
-                  transition={{
-                    duration: 3,
-                    repeat: Infinity,
-                    delay: idx * 0.5,
-                  }}
+              <div className="brutal-border brutal-shadow flex h-20 w-20 items-center justify-center bg-card">
+                <Image
+                  src={feature.icon}
+                  alt={feature.title}
+                  width={64}
+                  height={64}
+                  className="h-16 w-16 object-contain"
                 />
-
-                {/* Icon */}
-                <motion.div
-                  animate={{ y: [0, -6, 0] }}
-                  transition={{
-                    duration: 2.6,
-                    repeat: Infinity,
-                    ease: "easeInOut",
-                    delay: idx * 0.2,
-                  }}
-                >
-                  <Image
-                    src={feature.icon}
-                    alt={feature.title}
-                    width={96}
-                    height={96}
-                    className="h-24 w-24 object-contain"
-                  />
-                </motion.div>
-              </motion.div>
-
-              {/* Title */}
-              <motion.p
-                className="text-base font-inter font-medium text-white/90"
-                variants={headingVariants}
-              >
+              </div>
+              <p className="text-sm font-black uppercase tracking-wide">
                 {feature.title}
-              </motion.p>
+              </p>
             </motion.div>
           ))}
         </motion.div>

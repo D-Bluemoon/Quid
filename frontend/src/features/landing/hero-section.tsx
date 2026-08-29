@@ -4,6 +4,7 @@ import Image from "next/image";
 import { AnimatePresence, motion, useReducedMotion, Variants } from "framer-motion";
 import { useEffect, useMemo, useState } from "react";
 import SignUpButton from "@/components/auth/SignUpButton";
+import QuidLogo from "@/components/brand/QuidLogo";
 
 const heroStats = [
   {
@@ -103,53 +104,30 @@ export default function HeroSection() {
   }, [reduceMotion]);
 
   return (
-    <section className="relative overflow-hidden pb-16 pt-8 text-white">
-      <div className="pointer-events-none absolute inset-0">
-        <div className="absolute right-[-220px] top-[8%] h-[540px] w-[540px] rounded-full bg-indigo-500/40 blur-[170px]" />
-      </div>
-
+    <section className="relative overflow-hidden pb-16 pt-8 text-foreground">
       <div className="relative mx-auto flex w-full max-w-7xl flex-col gap-16 px-6 md:max-w-3xl lg:max-w-7xl">
         {/* Navigation */}
         <motion.nav
-          className="flex w-full items-center justify-between pt-6"
+          className="flex w-full items-center justify-between border-b-[3px] border-foreground pb-4 pt-2"
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
         >
           <div className="flex items-center gap-3">
-            <Image
-              src="/Quid Logo.png"
-              alt="Quid Logo"
-              width={28}
-              height={28}
-              className="h-7 w-12 mr-2"
-              priority
-            />
-            <div className="hidden lg:block lg:w-0.5 lg:h-6 lg:position-absolute lg:text-white lg:bg-white"></div>
-            <div className="hidden items-center gap-8 text-sm text-white/70 ml-2 md:flex">
-              <motion.span
-                className="cursor-pointer text-white text-[1rem] fw-[700] hover:text-purple-400 transition-colors"
-                whileHover={{ scale: 1.05 }}
-              >
+            <QuidLogo />
+            <div className="hidden h-6 w-[3px] bg-foreground md:block" />
+            <div className="hidden items-center gap-6 text-sm font-bold uppercase tracking-wide md:flex">
+              <motion.span className="cursor-pointer hover:text-brutal-violet">
                 For Builders
               </motion.span>
-              <motion.span
-                className="cursor-pointer text-white text-[1rem] fw-[700] hover:text-purple-400 transition-colors"
-                whileHover={{ scale: 1.05 }}
-              >
+              <motion.span className="cursor-pointer hover:text-brutal-pink">
                 For Contributors
               </motion.span>
-              <motion.span
-                className="cursor-pointer text-white text-[1rem] fw-[700] hover:text-purple-400 transition-colors"
-                whileHover={{ scale: 1.05 }}
-              >
+              <motion.span className="cursor-pointer hover:text-brutal-cyan">
                 About
               </motion.span>
-              <motion.span
-                className="cursor-pointer text-white text-[1rem] fw-[700] hover:text-purple-400 transition-colors"
-                whileHover={{ scale: 1.05 }}
-              >
-                Contact us
+              <motion.span className="cursor-pointer hover:text-brutal-orange">
+                Contact
               </motion.span>
             </div>
           </div>
@@ -163,15 +141,14 @@ export default function HeroSection() {
             type="button"
             aria-label="Open menu"
             onClick={() => setMobileMenuOpen(true)}
-            className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-white/20 bg-white/5 text-white md:hidden hover:border-white/40 transition-colors"
-            whileHover={{ scale: 1.1 }}
+            className="inline-flex h-10 w-10 cursor-pointer items-center justify-center brutal-border brutal-shadow bg-brutal-yellow md:hidden"
             whileTap={{ scale: 0.95 }}
           >
             <span className="sr-only">Open menu</span>
             <span className="flex flex-col gap-1">
-              <span className="h-[2px] w-5 rounded-full bg-white" />
-              <span className="h-[2px] w-5 rounded-full bg-white" />
-              <span className="h-[2px] w-5 rounded-full bg-white" />
+              <span className="h-[3px] w-5 bg-foreground" />
+              <span className="h-[3px] w-5 bg-foreground" />
+              <span className="h-[3px] w-5 bg-foreground" />
             </span>
           </motion.button>
         </motion.nav>
@@ -183,14 +160,14 @@ export default function HeroSection() {
               <motion.button
                 type="button"
                 aria-label="Close menu"
-                className="fixed inset-0 z-40 bg-black/40 backdrop-blur-[1px] md:hidden"
+                className="fixed inset-0 z-40 cursor-pointer bg-black/40 backdrop-blur-[1px] md:hidden"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
                 onClick={() => setMobileMenuOpen(false)}
               />
               <motion.aside
-                className="fixed right-4 top-4 z-50 w-[280px] rounded-3xl border border-white/20 bg-white/10 p-6 text-white shadow-[0_20px_60px_rgba(0,0,0,0.45)] backdrop-blur-xl md:hidden"
+                className="fixed right-4 top-4 z-50 w-[280px] brutal-border brutal-shadow bg-brutal-cyan p-6 text-foreground md:hidden"
                 initial={{ x: 40, opacity: 0 }}
                 animate={{ x: 0, opacity: 1 }}
                 exit={{ x: 40, opacity: 0 }}
@@ -202,34 +179,34 @@ export default function HeroSection() {
                     type="button"
                     aria-label="Close menu"
                     onClick={() => setMobileMenuOpen(false)}
-                    className="rounded-full border border-white/20 p-2 text-white hover:border-white/40 transition-colors"
+                    className="cursor-pointer brutal-border p-2 text-foreground"
                     whileHover={{ scale: 1.1 }}
                     whileTap={{ scale: 0.95 }}
                   >
                     ✕
                   </motion.button>
                 </div>
-                <div className="mt-6 flex flex-col gap-4 text-sm text-white/80">
+                <div className="mt-6 flex flex-col gap-4 text-sm text-muted-foreground">
                   <motion.span
-                    className="cursor-pointer hover:text-white transition-colors"
+                    className="cursor-pointer hover:text-brutal-violet transition-colors"
                     whileHover={{ x: 4 }}
                   >
                     For Builders
                   </motion.span>
                   <motion.span
-                    className="cursor-pointer hover:text-white transition-colors"
+                    className="cursor-pointer hover:text-brutal-violet transition-colors"
                     whileHover={{ x: 4 }}
                   >
                     For Contributors
                   </motion.span>
                   <motion.span
-                    className="cursor-pointer hover:text-white transition-colors"
+                    className="cursor-pointer hover:text-brutal-violet transition-colors"
                     whileHover={{ x: 4 }}
                   >
                     About
                   </motion.span>
                   <motion.span
-                    className="cursor-pointer hover:text-white transition-colors"
+                    className="cursor-pointer hover:text-brutal-violet transition-colors"
                     whileHover={{ x: 4 }}
                   >
                     Contact us
@@ -255,13 +232,14 @@ export default function HeroSection() {
           >
             <motion.div className="space-y-6 cursor-default" variants={itemVariants}>
               <motion.h1
-                className="text-4xl font-semibold leading-tight sm:text-5xl lg:text-[56px]"
+                className="text-4xl font-black uppercase leading-[1.05] tracking-tight sm:text-5xl lg:text-[56px]"
                 variants={headingVariants}
               >
-                Launch Better Stellar Products With Real User Insight
+                Launch Better Stellar Products With{" "}
+                <span className="bg-brutal-yellow px-2">Real User Insight</span>
               </motion.h1>
               <motion.p
-                className="max-w-xl font-inter text-base text-white/70 sm:text-lg"
+                className="max-w-xl text-base font-medium text-muted-foreground sm:text-lg"
                 variants={itemVariants}
               >
                 Quid lets Stellar builders create gated feedback quests where
@@ -276,19 +254,14 @@ export default function HeroSection() {
               variants={itemVariants}
             >
               <motion.button
-                className="h-[44px] w-[149px] rounded-[12px] border border-[#B159FF] bg-[#9011FF] text-sm font-inter font-semibold cursor-pointer text-white shadow-[0_0_12.1px_4px_rgba(177,89,255,0.15)] transition"
-                whileHover={{
-                  scale: 1.05,
-                  boxShadow: "0 0 20px rgba(144, 17, 255, 0.5)",
-                }}
-                whileTap={{ scale: 0.95 }}
+                className="h-11 min-w-[149px] cursor-pointer brutal-border brutal-shadow bg-brutal-pink px-5 text-sm font-bold uppercase tracking-wide text-foreground transition hover:translate-x-[-2px] hover:translate-y-[-2px] hover:shadow-[6px_6px_0_0_#0a0a0a]"
+                whileTap={{ scale: 0.98 }}
               >
                 Create a Quest
               </motion.button>
               <motion.button
-                className="flex h-[44px] w-[158px] items-center justify-center gap-2 rounded-[12px] border border-[#E8E0E0] px-4 py-[14px] text-sm font-inter font-semibold cursor-pointer text-white/90 transition hover:border-white/60 hover:text-white"
-                whileHover={{ scale: 1.05, borderColor: "rgba(255, 255, 255, 0.6)" }}
-                whileTap={{ scale: 0.95 }}
+                className="flex h-11 min-w-[158px] cursor-pointer items-center justify-center gap-2 brutal-border brutal-shadow bg-brutal-cyan px-4 text-sm font-bold uppercase tracking-wide text-foreground"
+                whileTap={{ scale: 0.98 }}
               >
                 Explore Quests
                 <motion.div whileHover={{ x: 2 }} transition={{ duration: 0.2 }}>
@@ -311,12 +284,24 @@ export default function HeroSection() {
               initial="hidden"
               animate="visible"
             >
-              {heroStats.map((stat) => (
-                <motion.div key={stat.value} className="space-y-2" variants={statVariants}>
-                  <p className="font-geist text-[32px] font-bold leading-[120%] text-white">
+              {heroStats.map((stat, idx) => (
+                <motion.div
+                  key={stat.value}
+                  className="brutal-border brutal-shadow space-y-1 bg-card px-4 py-3"
+                  style={{
+                    backgroundColor:
+                      idx === 0
+                        ? "#FFE600"
+                        : idx === 1
+                          ? "#00E5FF"
+                          : "#B8FF00",
+                  }}
+                  variants={statVariants}
+                >
+                  <p className="font-mono text-[28px] font-black leading-none">
                     {stat.value}
                   </p>
-                  <p className="font-inter text-sm font-normal leading-[130%] text-[#949494]">
+                  <p className="text-xs font-bold uppercase tracking-wide">
                     {stat.label}
                   </p>
                 </motion.div>
@@ -332,7 +317,7 @@ export default function HeroSection() {
             className="relative w-full max-w-[456px] flex-1 md:mx-auto lg:mx-0"
           >
             <div
-              className="h-full w-full rounded-[9.82px] border-[1.23px] border-[#2B1627] bg-[#0F0D0F] p-[29.45px] shadow-[0_4.91px_7.36px_-4.91px_rgba(0,0,0,0.1),0_12.27px_18.41px_-3.68px_rgba(0,0,0,0.1)] lg:h-[433.4px]"
+              className="h-full w-full brutal-border brutal-shadow-lg bg-card p-6 lg:h-[433px]"
               aria-live="polite"
             >
               <AnimatePresence mode="wait">
@@ -345,26 +330,25 @@ export default function HeroSection() {
                   className="flex h-full flex-col justify-between gap-[73.63px]"
                 >
                   <div className="space-y-4 cursor-default">
-                    <h3 className="font-geist text-[29.45px] font-bold leading-[39.27px] text-[#EFEFEF]">
+                    <h3 className="text-2xl font-black uppercase leading-tight tracking-tight">
                       {activeSlide.title}
                     </h3>
-                    <p className="font-geist text-[19.63px] font-normal leading-[29.45px] text-[#71717A]">
+                    <p className="text-base font-medium text-muted-foreground">
                       {activeSlide.description}
                     </p>
                   </div>
 
-                  <div className="flex flex-col items-center justify-between text-xs text-white/60">
+                  <div className="flex flex-col items-center justify-between text-xs text-muted-foreground">
                     <div className="flex items-center justify-between w-full text-[1rem] mb-4">
                       <span>Time: {activeSlide.time}</span>
                       <span>Questions: {activeSlide.questions}</span>
                     </div>
                     <motion.button
-                      className="flex h-[65.27px] w-full items-center justify-between rounded-[7.36px] border-2 border-[#9011FF] bg-[#18181B] px-[19.63px] font-geist text-[19.63px] font-bold leading-[100%] text-[#FAFAFA] cursor-pointer hover:bg-purple-900/20 transition-colors"
-                      whileHover={{ scale: 1.02 }}
+                      className="flex h-14 w-full cursor-pointer items-center justify-between brutal-border brutal-shadow bg-brutal-lime px-4 text-base font-black uppercase text-foreground"
                       whileTap={{ scale: 0.98 }}
                     >
                       <span>{activeSlide.cta}</span>
-                      <span className="text-sm font-semibold text-white">
+                      <span className="text-sm font-black text-foreground">
                         {activeSlide.reward}
                       </span>
                     </motion.button>
@@ -383,8 +367,8 @@ export default function HeroSection() {
               {cardSlides.map((_, idx) => (
                 <motion.button
                   key={idx}
-                  className={`h-2 rounded-full transition-all ${
-                    idx === activeIndex ? "bg-purple-500 w-8" : "bg-white/20 w-2"
+                  className={`h-3 cursor-pointer border-[2px] border-foreground transition-all ${
+                    idx === activeIndex ? "w-10 bg-brutal-orange" : "w-3 bg-muted"
                   }`}
                   onClick={() => setActiveIndex(idx)}
                   whileHover={{ scale: 1.2 }}
@@ -392,8 +376,6 @@ export default function HeroSection() {
                 />
               ))}
             </motion.div>
-
-            <div className="absolute -right-10 -top-8 h-24 w-24 rounded-full bg-violet-500/40 blur-[60px]" />
           </motion.div>
         </div>
       </div>

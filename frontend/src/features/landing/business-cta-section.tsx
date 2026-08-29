@@ -75,8 +75,8 @@ export default function BusinessCTASection() {
         }}
       />
 
-      {/* Dark Overlay */}
-      <div className="absolute inset-0 bg-[#110E13] opacity-80" />
+      {/* Dark Overlay — keeps CTA background image readable */}
+      <div className="absolute inset-0 bg-foreground/85" />
 
       {/* Content Container */}
       <motion.div
@@ -88,15 +88,14 @@ export default function BusinessCTASection() {
       >
         {/* Section Label */}
         <motion.span
-          className="text-xs sm:text-sm font-semibold uppercase tracking-widest text-purple-400"
+          className="font-mono text-xs font-bold uppercase tracking-widest text-brutal-yellow sm:text-sm"
           variants={labelVariants}
         >
           Business
         </motion.span>
 
-        {/* Main Heading */}
         <motion.h2
-          className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-white leading-tight max-w-4xl"
+          className="max-w-4xl text-3xl font-black uppercase leading-tight text-background sm:text-4xl md:text-5xl lg:text-6xl"
           variants={headingVariants}
         >
           Are you looking for user insights on your product?
@@ -113,11 +112,11 @@ export default function BusinessCTASection() {
           {businessTags.map((tag) => (
             <motion.div
               key={tag}
-              className="px-4 md:px-5 py-2 md:py-2.5 rounded-full border border-white/20 bg-white/8 backdrop-blur-md hover:border-white/30 transition-all duration-300 cursor-pointer"
+              className="cursor-pointer brutal-border brutal-shadow bg-brutal-cyan px-4 py-2 md:px-5 md:py-2.5"
               variants={tagVariants}
-              whileHover="hover"
+              whileHover={{ translate: "-2px -2px" }}
             >
-              <span className="text-sm md:text-base font-medium text-white">
+              <span className="text-sm font-bold uppercase tracking-wide text-foreground md:text-base">
                 {tag}
               </span>
             </motion.div>
@@ -127,9 +126,8 @@ export default function BusinessCTASection() {
         {/* CTA Link */}
         <motion.a
           href="#"
-          className="mt-8 md:mt-12 text-base md:text-lg text-purple-300 hover:text-purple-200 font-semibold flex items-center gap-2 transition-colors duration-300 group"
+          className="mt-8 flex items-center gap-2 text-base font-black uppercase tracking-wide text-brutal-yellow md:mt-12 md:text-lg"
           variants={ctaVariants}
-          whileHover={{ x: 6 }}
         >
           Create a quest now
           <motion.span
