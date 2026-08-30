@@ -21,10 +21,12 @@ export default function RequireWallet({
 
   if (!connected) {
     return (
-      <div className="flex h-screen items-center justify-center bg-[#0D0B10] text-white">
-        <div className="text-center">
-          <div className="mx-auto mb-4 h-8 w-8 animate-spin rounded-full border-2 border-[#9011FF] border-t-transparent" />
-          <p className="text-sm text-[#8C86B8]">Checking wallet connection…</p>
+      <div className="flex h-screen items-center justify-center brutal-grid-bg bg-background text-foreground">
+        <div className="brutal-border brutal-shadow bg-card p-8 text-center">
+          <div className="mx-auto mb-4 h-8 w-8 animate-spin border-[3px] border-foreground border-t-brutal-pink" />
+          <p className="text-sm font-bold uppercase tracking-wide text-muted-foreground">
+            Checking wallet connection…
+          </p>
         </div>
       </div>
     );
