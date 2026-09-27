@@ -3,10 +3,11 @@
 import "dotenv/config";
 import { defineConfig } from "prisma/config";
 
-const databaseUrl = process.env["DATABASE_URL"];
-if (!databaseUrl) {
-  throw new Error("DATABASE_URL is not set");
-}
+// `prisma generate` loads this file but does not connect. Vercel builds often
+// run before DATABASE_URL is available, so fall back to a dummy URL then.
+const databaseUrl =
+  process.env.DATABASE_URL ??
+  "postgresql://placeholder:placeholder@127.0.0.1:5432/placeholder";
 
 export default defineConfig({
   schema: "prisma/schema.prisma",
