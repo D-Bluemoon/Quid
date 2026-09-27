@@ -147,7 +147,7 @@ export function uploadFileToIpfs(
         formData.append("file", file);
 
         const xhr = new XMLHttpRequest();
-        xhr.open("POST", `${API_URL}/upload`);
+        xhr.open("POST", `${getApiBaseUrl()}/upload`);
         xhr.setRequestHeader("Authorization", `Bearer ${authToken}`);
 
         xhr.upload.onprogress = (event) => {
