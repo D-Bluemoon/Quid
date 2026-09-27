@@ -1,5 +1,6 @@
 import { signFreighterTransaction } from "@/lib/freighter-wallet";
 import { getApiBaseUrl } from "@/lib/api-base";
+import { ApiUnreachableError } from "@/lib/api-network";
 import type { Networks } from "@stellar/stellar-sdk";
 
 const SESSION_KEY = "quid_creator_auth";
@@ -72,6 +73,11 @@ async function authenticate(address: string): Promise<CreatorSession> {
   const challengeResponse = await fetch(
     getApiUrl(`/auth/challenge?address=${encodeURIComponent(address)}`),
   );
+  if (challengeResponse.status === 404 || challengeResponse.status === 502 || challengeResponse.status === 503) {
+    throw new ApiUnreachableError(
+      "Backend API not found. Start the backend or unset NEXT_PUBLIC_API_URL.",
+    );
+  }
   if (!challengeResponse.ok) {
     throw new Error("Unable to start wallet authentication");
   }

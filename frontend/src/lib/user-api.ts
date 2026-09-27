@@ -1,5 +1,8 @@
 import { creatorApiFetch, hasApiSession, isApiConfigured } from '@/lib/creator-api';
-import { isNetworkError } from '@/lib/api-network';
+import {
+  ApiUnreachableError,
+  isApiUnreachableError,
+} from '@/lib/api-network';
 import {
   fromServerRole,
   saveUserRole,
@@ -66,9 +69,9 @@ export async function persistUserRole(
     saveUserRole(role);
     return true;
   } catch (error) {
-    if (isNetworkError(error)) {
+    if (isApiUnreachableError(error)) {
       console.warn(
-        '[Quid] API unreachable — saving account type locally. Start the backend or unset NEXT_PUBLIC_API_URL for frontend-only mode.',
+        '[Quid] API unreachable — saving account type locally. Start the backend (npm run start:dev in backend/) or unset NEXT_PUBLIC_API_URL for frontend-only mode.',
         error,
       );
       saveUserRole(role);
