@@ -92,6 +92,8 @@ model Submission {
  sentiment Float? @map("sentiment")
  status SubmissionStatus @default(PENDING) @map("status")
  rejectionReason String? @map("rejection_reason")
+ txHash String? @unique @map("tx_hash")
+ chainConfirmed Boolean @default(false) @map("chain_confirmed")
  createdAt DateTime @default(now()) @map("created_at")
  updatedAt DateTime @updatedAt @map("updated_at")
 
