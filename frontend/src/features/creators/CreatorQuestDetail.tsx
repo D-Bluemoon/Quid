@@ -1,7 +1,8 @@
 import { useState } from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import EmptyState from "./EmptyState";
+import { EmptyState } from "@/components/ui/empty-state";
+import { SkeletonList } from "@/components/ui/skeleton-list";
 import QuestHeader from "./QuestHeader";
 import SubmissionCard from "./SubmissionCard";
 import TaskInfo from "./TaskInfo";
@@ -12,11 +13,13 @@ export default function CreatorQuestDetail({
   submissions,
   questId,
   isActive = true,
+  loading = false,
 }: {
   quest?: Quest | null;
   submissions: Submission[];
   questId?: string;
   isActive?: boolean;
+  loading?: boolean;
 }) {
   const router = useRouter();
   const [approvedSubmissions, setApprovedSubmissions] = useState<string[]>([]);
@@ -161,8 +164,14 @@ export default function CreatorQuestDetail({
           <div>
             {activeTab === "details" ? (
               <TaskInfo />
+            ) : loading ? (
+              <SkeletonList count={2} variant="submission" />
             ) : submissions.length === 0 ? (
-              <EmptyState message="No submissions yet." />
+              <EmptyState
+                title="No Submissions Yet"
+                description="Responses will appear here once participants start submitting feedback to this quest."
+                variant="card"
+              />
             ) : (
               submissions.map((sub) => (
                 <div key={sub.id}>
