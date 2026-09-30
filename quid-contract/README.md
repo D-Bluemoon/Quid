@@ -14,6 +14,7 @@ Soroban (Rust) smart contracts for Quid: bounty escrow, reputation, milestone pr
 | `quid-badge-nft` | `quid_badge_nft.wasm` | Badge NFTs for completed missions / reputation tiers |
 | `quid-fee-collector` | `quid_fee_collector.wasm` | Protocol fee vault: configurable cut, per-token balances, admin withdrawal |
 | `quid-mission-factory` | `quid_mission_factory.wasm` | Curated mission templates that launch into configured store instances |
+| `quid-moderation-registry` | `quid_moderation_registry.wasm` | Shared ban/mute lists read by store gates (`submit_feedback`) |
 | `hello-world` | `hello_world.wasm` | Scaffold only — safe to ignore |
 
 ## Prerequisites
@@ -176,6 +177,7 @@ stellar contract invoke \
 - `cancel_mission` / `pause_mission` / `update_mission_status`
 - `slash_hunter_stake` / treasury helpers
 - `set_fee_collector` / `get_fee_collector` — route the protocol fee to `quid-fee-collector`
+- `set_moderation_registry` / `get_moderation_registry` — reject banned/muted hunters in `submit_feedback` via `quid-moderation-registry`
 
 #### Event catalog and schema stability
 
