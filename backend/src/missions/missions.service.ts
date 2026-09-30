@@ -13,6 +13,7 @@ import {
   MissionListSort,
 } from './dto/list-missions-query.dto';
 import { SaveDraftDto } from './dto/save-draft.dto';
+import { canTransition } from '../submissions/submission-status';
 
 const missionListInclude = {
   owner: {
@@ -231,7 +232,9 @@ export class MissionsService {
       throw new NotFoundException(`Submission ${submissionId} not found`);
     }
 
-    if (submission.status !== SubmissionStatus.PENDING) {
+    // Shared with the indexer path so review and chain transitions stay
+    // consistent with the quid-store enum (#310).
+    if (!canTransition(submission.status, status, 'review')) {
       throw new ConflictException(
         `Submission ${submissionId} cannot transition from ${submission.status} to ${status}`,
       );
