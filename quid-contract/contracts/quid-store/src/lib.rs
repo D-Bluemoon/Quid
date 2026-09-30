@@ -100,6 +100,16 @@ pub trait StakingPool {
     );
 }
 
+/// Subset of `quid-moderation-registry` the store reads (#305).
+///
+/// Declared as a client interface so the store wasm stays free of the
+/// registry's code.
+#[contractclient(name = "ModerationRegistryClient")]
+pub trait ModerationRegistry {
+    /// `false` while `address` is banned or muted.
+    fn can_submit(env: Env, address: Address) -> bool;
+}
+
 #[contract]
 pub struct QuidStoreContract;
 
@@ -206,6 +216,15 @@ impl QuidStoreContract {
         stake_amount: i128,
     ) -> Result<(), QuidError> {
         hunter.require_auth();
+
+        // Moderation gate (#305): with a registry configured, a banned or
+        // muted hunter is rejected before any stake moves or state changes.
+        // Stores without a registry keep their existing behaviour.
+        if let Some(registry) = Self::moderation_registry(&env) {
+            if !ModerationRegistryClient::new(&env, &registry).can_submit(&hunter) {
+                return Err(QuidError::HunterBanned);
+            }
+        }
 
         let mission = Self::get_mission(env.clone(), mission_id)?;
 
@@ -499,6 +518,30 @@ impl QuidStoreContract {
 
     fn staking_pool(env: &Env) -> Option<Address> {
         env.storage().instance().get(&DataKey::StakingPool)
+    }
+
+    /// Point the store at a `quid-moderation-registry` (#305).
+    ///
+    /// Same handover rule as `set_fee_collector`: the first caller must
+    /// authorize as the new registry, and afterwards only the current
+    /// registry can move the slot.
+    pub fn set_moderation_registry(env: Env, new_registry: Address) {
+        if let Some(current) = Self::moderation_registry(&env) {
+            current.require_auth();
+        } else {
+            new_registry.require_auth();
+        }
+        env.storage()
+            .instance()
+            .set(&DataKey::ModerationRegistry, &new_registry);
+    }
+
+    pub fn get_moderation_registry(env: Env) -> Result<Address, QuidError> {
+        Self::moderation_registry(&env).ok_or(QuidError::ModerationRegistryNotSet)
+    }
+
+    fn moderation_registry(env: &Env) -> Option<Address> {
+        env.storage().instance().get(&DataKey::ModerationRegistry)
     }
 
     /// Set the protocol treasury address. Must be called by the treasury itself.
