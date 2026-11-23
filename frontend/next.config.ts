@@ -1,4 +1,10 @@
+import withBundleAnalyzerPlugin from "@next/bundle-analyzer";
 import type { NextConfig } from "next";
+
+const withBundleAnalyzer =
+  process.env.ANALYZE === "true"
+    ? withBundleAnalyzerPlugin({ enabled: true, openAnalyzer: false })
+    : (config: NextConfig) => config;
 
 const backendUrl =
   process.env.BACKEND_URL?.replace(/\/$/, "") ?? "http://localhost:3001";
@@ -29,6 +35,14 @@ const nextConfig: NextConfig = {
       },
     ];
   },
+  experimental: {
+    optimizePackageImports: [
+      "@iconify/react",
+      "framer-motion",
+      "lucide-react",
+      "react-icons",
+    ],
+  },
 };
 
-export default nextConfig;
+export default withBundleAnalyzer(nextConfig);

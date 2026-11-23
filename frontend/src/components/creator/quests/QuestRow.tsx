@@ -6,7 +6,7 @@ import QuestRowMenu from "./QuestRowMenu";
 import type { QuestRowData } from "./types";
 
 const TAG_STYLES: Record<QuestRowData["tagVariant"], string> = {
-  active: "bg-[#8B5CF6]/20 text-foreground",
+  active: "bg-brutal-violet/20 text-foreground",
   draft: "bg-white/10 text-muted-foreground",
   completed: "bg-emerald-500/15 text-emerald-400",
 };
@@ -51,7 +51,7 @@ export default function QuestRow({ quest }: { quest: QuestRowData }) {
     <div className="flex items-start gap-4 py-4 sm:items-center">
       <Link
         href={`/creator/quests/${quest.id}`}
-        className="flex min-w-0 flex-1 items-start gap-4  focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#8B5CF6] sm:items-center"
+        className="flex min-w-0 flex-1 items-start gap-4  focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brutal-violet sm:items-center"
       >
         <Image
           src="/namelogo.png"

@@ -98,7 +98,7 @@ export default function ProofFileUpload({
           type="button"
           onClick={() => inputRef.current?.click()}
           disabled={disabled}
-          className="flex w-full items-center justify-center gap-2 rounded-xl border border-dashed border-white/20 bg-white/[0.02] p-4 text-sm text-white/60 transition-colors hover:border-[#B78CFF]/50 hover:text-white disabled:cursor-not-allowed disabled:opacity-50"
+          className="flex w-full items-center justify-center gap-2 rounded-xl border border-dashed border-white/20 bg-white/[0.02] p-4 text-sm text-white/60 transition-colors hover:border-brutal-violet/50 hover:text-white disabled:cursor-not-allowed disabled:opacity-50"
         >
           <UploadCloud className="size-4" />
           Attach screenshot, video, or PDF proof
@@ -108,13 +108,13 @@ export default function ProofFileUpload({
       {state === "uploading" && (
         <div className="rounded-xl border border-white/15 bg-white/[0.04] p-3 text-sm text-white/80">
           <div className="flex items-center gap-2">
-            <Loader2 className="size-4 shrink-0 animate-spin text-[#B78CFF]" />
+            <Loader2 className="size-4 shrink-0 animate-spin text-brutal-violet" />
             <span className="truncate">{fileName}</span>
             <span className="ml-auto shrink-0 text-xs text-white/50">{progress}%</span>
           </div>
           <div className="mt-2 h-1.5 w-full overflow-hidden rounded-full bg-white/10">
             <div
-              className="h-full rounded-full bg-[#B78CFF] transition-all"
+              className="h-full rounded-full bg-brutal-violet transition-all"
               style={{ width: `${progress}%` }}
             />
           </div>
@@ -151,7 +151,7 @@ export default function ProofFileUpload({
           <button
             type="button"
             onClick={reset}
-            className="text-xs font-medium text-[#B78CFF] hover:underline"
+            className="text-xs font-medium text-brutal-violet hover:underline"
           >
             Try a different file
           </button>

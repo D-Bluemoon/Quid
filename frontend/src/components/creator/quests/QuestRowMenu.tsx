@@ -51,7 +51,7 @@ export default function QuestRowMenu({
       {open ? (
         <div
           role="menu"
-          className="absolute right-0 top-10 z-10 w-48 overflow-hidden  border border-foreground/30 bg-[#100D1C] py-1.5 shadow-xl shadow-black/50"
+          className="absolute right-0 top-10 z-10 w-48 overflow-hidden  border border-foreground/30 bg-card py-1.5 shadow-xl shadow-black/50"
         >
           {options.map((option) => {
             const Icon = option.icon;

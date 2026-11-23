@@ -4,7 +4,7 @@ use super::*;
 use crate::error::MilestoneEscrowError;
 use crate::types::{MilestoneStatus, ProgramStatus};
 use soroban_sdk::{
-    testutils::{Address as _, Events, MockAuth, MockAuthInvoke},
+    testutils::{Address as _, Events, Ledger as _, MockAuth, MockAuthInvoke},
     token::{Client as TokenClient, StellarAssetClient},
     Address, Env, IntoVal, String,
 };
@@ -725,4 +725,42 @@ fn test_happy_path_partial_release_then_cancel() {
     assert_eq!(token_client.balance(&contract_id), 0);
     // Recipient received only what was paid before cancellation
     assert_eq!(token_client.balance(&recipient), amount_m1);
+}
+
+#[test]
+fn test_ttl_extension_allows_approve_after_ledger_advance() {
+    let (env, contract_id, sponsor, token_address, _) = setup_test_env();
+    let client = QuidMilestoneEscrowContractClient::new(&env, &contract_id);
+    let recipient = Address::generate(&env);
+
+    let program_id = client.create_program(
+        &sponsor,
+        &recipient,
+        &token_address,
+        &1_000_i128,
+        &None,
+        &None,
+    );
+    let milestone_id = client.add_milestone(
+        &program_id,
+        &String::from_str(&env, "Milestone 1"),
+        &1_000_i128,
+        &1_750_000_000,
+        &String::from_str(&env, "QmM1"),
+    );
+
+    env.ledger().with_mut(|li| {
+        li.sequence_number += 5_200_000;
+        li.min_persistent_entry_ttl = 5_200_000;
+    });
+
+    // Reads should still work after TTL extension.
+    let _program = client.get_program(&program_id);
+    let _milestone = client.get_milestone(&program_id, &milestone_id);
+
+    client.approve_milestone(&program_id, &milestone_id, &sponsor);
+    assert_eq!(
+        client.get_milestone(&program_id, &milestone_id).status,
+        MilestoneStatus::Paid
+    );
 }

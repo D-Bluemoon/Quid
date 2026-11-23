@@ -161,7 +161,7 @@ export default function QuestsHub() {
         </div>
         <Link
           href="/creator/quests/new"
-          className="inline-flex shrink-0 items-center justify-center  bg-[#8B5CF6] px-4 py-2.5 text-sm font-semibold text-foreground transition-colors hover:bg-[#7c0de0]"
+          className="inline-flex shrink-0 items-center justify-center  bg-brutal-violet px-4 py-2.5 text-sm font-semibold text-foreground transition-colors hover:bg-brutal-violet"
         >
           + Add new Mission
         </Link>
@@ -190,14 +190,14 @@ export default function QuestsHub() {
               <span
                 className={`rounded-full px-1.5 py-0.5 text-xs ${
                   isActive
-                    ? "bg-[#8B5CF6]/20 text-foreground"
+                    ? "bg-brutal-violet/20 text-foreground"
                     : "bg-white/5 text-muted-foreground"
                 }`}
               >
                 {counts[tab.key]}
               </span>
               {isActive ? (
-                <span className="absolute inset-x-0 bottom-[-1px] h-0.5 bg-[#8B5CF6]" />
+                <span className="absolute inset-x-0 bottom-[-1px] h-0.5 bg-brutal-violet" />
               ) : null}
             </button>
           );

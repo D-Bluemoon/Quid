@@ -1,0 +1,110 @@
+name: Lighthouse CI
+
+on:
+  pull_request:
+    branches: ["main"]
+    paths:
+      - 'frontend/**'
+      - '.github/workflows/lighthouse.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  lighthouse:
+    name: Lighthouse CI
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./frontend
+    env:
+      NEXT_PUBLIC_QUID_STORE_ID: "CAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD2KM"
+      NEXT_PUBLIC_QUID_REPUTATION_ID: "CAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD2KM"
+      NEXT_PUBLIC_QUID_MILESTONE_ID: "CAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD2KM"
+      NEXT_PUBLIC_QUID_TIP_JAR_ID: "CAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD2KM"
+      NEXT_PUBLIC_SOROBAN_RPC_URL: "https://soroban-testnet.stellar.org"
+      NEXT_PUBLIC_REWARD_TOKEN_XLM: "CDLZFC3SYJYDZT7K67VZ75HPJVIEUVNIXF47ZG2FB2RMQQVU2HHGCYSC"
+      NEXT_PUBLIC_REWARD_TOKEN_USDC: "CBIELTK6YBZJU5UP2WWQEUCYKLPU6AUNZ2BQ4WWFEIE3USCIHMXQDAMA"
+      NEXT_PUBLIC_NATIVE_TOKEN_ID: "CAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD2KM"
+      NEXT_PUBLIC_API_URL: "http://localhost:3001"
+      NEXT_PUBLIC_HORIZON_URL: "https://horizon-testnet.stellar.org"
+      NEXT_PUBLIC_FRIENDBOT_URL: "https://friendbot.stellar.org"
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+          cache-dependency-path: frontend/package-lock.json
+
+      - name: Install Dependencies
+        run: npm ci
+
+      - name: Build Frontend
+        run: npm run build
+
+      - name: Start Next.js server
+        run: nohup npm run start -- --hostname 127.0.0.1 --port 3000 > "$RUNNER_TEMP/next-start.log" 2>&1 &
+
+      - name: Wait for server
+        run: |
+          for attempt in $(seq 1 60); do
+            if curl --fail --silent --show-error http://127.0.0.1:3000/ > /dev/null; then
+              exit 0
+            fi
+            sleep 2
+          done
+          echo "Next.js server did not start in time" >&2
+          exit 1
+
+      - name: Write Lighthouse CI config
+        run: |
+          cat > "$RUNNER_TEMP/lighthouserc.json" <<'JSON'
+          {
+            "ci": {
+              "collect": {
+                "url": [
+                  "http://127.0.0.1:3000/",
+                  "http://127.0.0.1:3000/hunter/mission-board",
+                  "http://127.0.0.1:3000/hunter"
+                ],
+                "numberOfRuns": 3,
+                "settings": {
+                  "chromeFlags": "--no-sandbox"
+                }
+              },
+              "assert": {
+                "assertMatrix": [
+                  {
+                    "matchingUrlPattern": "^http://127\\.0\\.0\\.1:3000/$",
+                    "assertions": {
+                      "resource-summary:script:size": ["error", { "maxNumericValue": 650000, "aggregationMethod": "median" }],
+                      "largest-contentful-paint": ["error", { "maxNumericValue": 9000, "aggregationMethod": "median" }],
+                      "interaction-to-next-paint": ["warn", { "maxNumericValue": 200, "aggregationMethod": "median" }],
+                      "total-blocking-time": ["error", { "maxNumericValue": 750, "aggregationMethod": "median" }]
+                    }
+                  },
+                  {
+                    "matchingUrlPattern": "^http://127\\.0\\.0\\.1:3000/hunter(/mission-board)?/?$",
+                    "assertions": {
+                      "resource-summary:script:size": ["error", { "maxNumericValue": 650000, "aggregationMethod": "median" }],
+                      "largest-contentful-paint": ["error", { "maxNumericValue": 9000, "aggregationMethod": "median" }],
+                      "interaction-to-next-paint": ["warn", { "maxNumericValue": 200, "aggregationMethod": "median" }],
+                      "total-blocking-time": ["error", { "maxNumericValue": 750, "aggregationMethod": "median" }]
+                    }
+                  }
+                ]
+              },
+              "upload": {
+                "target": "filesystem",
+                "outputDir": ".lighthouseci"
+              }
+            }
+          }
+          JSON
+
+      - name: Run Lighthouse CI
+        run: npx --yes @lhci/cli@0.15 autorun --config="$RUNNER_TEMP/lighthouserc.json"

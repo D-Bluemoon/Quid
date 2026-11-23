@@ -2896,3 +2896,46 @@ fn test_reject_submission_requires_owner_auth() {
         SubmissionStatus::Pending
     );
 }
+
+#[test]
+#[should_panic(expected = "Error(Contract, #8)")]
+fn test_update_mission_metadata_fails_after_first_submission() {
+    let (env, contract_id, owner, token_address) = setup_test_env();
+    let client = QuidStoreContractClient::new(&env, &contract_id);
+
+    let hunter = Address::generate(&env);
+    mint_tokens_for_hunter(&env, &token_address, &hunter, 1_000);
+
+    let mission_id = create_pending_mission(&env, &client, &owner, &token_address, 5);
+    client.submit_feedback(
+        &mission_id,
+        &hunter,
+        &String::from_str(&env, "QmSubmission"),
+        &token_address,
+        &10,
+    );
+    client.payout_participant(&mission_id, &hunter);
+
+    client.update_mission_metadata(
+        &mission_id,
+        &Some(String::from_str(&env, "Updated title")),
+        &Some(String::from_str(&env, "QmUpdated")),
+    );
+}
+
+#[test]
+fn test_update_mission_metadata_before_submission() {
+    let (env, contract_id, owner, token_address) = setup_test_env();
+    let client = QuidStoreContractClient::new(&env, &contract_id);
+
+    let mission_id = create_pending_mission(&env, &client, &owner, &token_address, 5);
+    client.update_mission_metadata(
+        &mission_id,
+        &Some(String::from_str(&env, "Fixed title")),
+        &Some(String::from_str(&env, "QmFixed")),
+    );
+
+    let mission = client.get_mission(&mission_id);
+    assert_eq!(mission.title, String::from_str(&env, "Fixed title"));
+    assert_eq!(mission.description_cid, String::from_str(&env, "QmFixed"));
+}

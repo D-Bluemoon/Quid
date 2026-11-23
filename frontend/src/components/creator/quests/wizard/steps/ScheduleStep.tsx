@@ -23,7 +23,7 @@ export default function ScheduleStep({
           onClick={() => onChange({ publishOption: "immediately" })}
           className={`flex-1  border p-4 text-left transition-colors ${
             data.publishOption === "immediately"
-              ? "border-[#8B5CF6] bg-[#8B5CF6]/5"
+              ? "border-brutal-violet bg-brutal-violet/5"
               : "border-foreground/30 hover:border-white/20"
           }`}
         >
@@ -37,7 +37,7 @@ export default function ScheduleStep({
           onClick={() => onChange({ publishOption: "scheduled" })}
           className={`flex-1  border p-4 text-left transition-colors ${
             data.publishOption === "scheduled"
-              ? "border-[#8B5CF6] bg-[#8B5CF6]/5"
+              ? "border-brutal-violet bg-brutal-violet/5"
               : "border-foreground/30 hover:border-white/20"
           }`}
         >

@@ -6,6 +6,7 @@ export interface DashboardEmptyStateProps {
   title: string;
   description: string;
   actionLabel?: string;
+  actionHref?: string;
   onAction?: () => void;
   icon?: React.ReactNode;
 }
@@ -14,6 +15,7 @@ export const EmptyState: React.FC<DashboardEmptyStateProps> = ({
   title,
   description,
   actionLabel,
+  actionHref,
   onAction,
   icon,
 }) => {
@@ -24,9 +26,10 @@ export const EmptyState: React.FC<DashboardEmptyStateProps> = ({
       icon={icon}
       variant="card"
       action={
-        actionLabel && onAction
+        actionLabel && (onAction || actionHref)
           ? {
               label: actionLabel,
+              href: actionHref,
               onClick: onAction,
               icon: Plus,
             }
@@ -57,6 +60,18 @@ export const NoResponsesEmptyState: React.FC = () => {
       title="No Responses Yet"
       description="You don't have any reports yet. Hunters will appear here once they start submitting reports to your missions."
       icon={<FileText className="size-8 text-blue-400" />}
+    />
+  );
+};
+
+export const FirstTimeEmptyState: React.FC = () => {
+  return (
+    <EmptyState
+      title="Start with a mission template"
+      description="Choose a template to define your test, set a reward, and invite hunters. Templates open the mission builder."
+      actionLabel="Use a template"
+      actionHref="/creator/quests/new"
+      icon={<FileText className="size-8 text-brutal-violet" />}
     />
   );
 };

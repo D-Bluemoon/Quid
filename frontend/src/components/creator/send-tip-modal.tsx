@@ -134,7 +134,7 @@ export default function SendTipModal({
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/75 p-4 backdrop-blur-sm">
-      <div className="relative w-full max-w-md border border-white/15 bg-[#120F1D] p-6 text-foreground shadow-2xl">
+      <div className="relative w-full max-w-md border border-white/15 bg-card p-6 text-foreground shadow-2xl">
         <div className="flex items-start justify-between border-b border-foreground/30 pb-4">
           <div>
             <span className="text-xs font-semibold uppercase tracking-wider text-foreground">
@@ -171,7 +171,7 @@ export default function SendTipModal({
                     if (amountError) validateAmount(e.target.value);
                   }}
                   placeholder="e.g. 5"
-                  className="mt-2 w-full border border-white/15 bg-white/[0.04] p-3 text-sm text-foreground placeholder-white/30 focus:border-[#B78CFF] focus:outline-none"
+                  className="mt-2 w-full border border-white/15 bg-white/[0.04] p-3 text-sm text-foreground placeholder-white/30 focus:border-brutal-violet focus:outline-none"
                 />
                 {amountError && (
                   <p className="mt-1 text-xs text-red-400">{amountError}</p>
@@ -187,7 +187,7 @@ export default function SendTipModal({
                   value={memo}
                   onChange={(e) => setMemo(e.target.value)}
                   placeholder="Great work on this mission!"
-                  className="mt-2 w-full border border-white/15 bg-white/[0.04] p-3 text-sm text-foreground placeholder-white/30 focus:border-[#B78CFF] focus:outline-none"
+                  className="mt-2 w-full border border-white/15 bg-white/[0.04] p-3 text-sm text-foreground placeholder-white/30 focus:border-brutal-violet focus:outline-none"
                 />
               </div>
 
@@ -209,7 +209,7 @@ export default function SendTipModal({
                 <button
                   type="submit"
                   disabled={!amount.trim()}
-                  className="inline-flex items-center gap-2 bg-[linear-gradient(135deg,#9011FF_0%,#B78CFF_100%)] px-6 py-2.5 text-sm font-semibold text-foreground shadow-lg transition-transform hover:opacity-95 active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-50"
+                  className="inline-flex items-center gap-2 bg-brutal-violet px-6 py-2.5 text-sm font-semibold text-foreground shadow-lg transition-transform hover:opacity-95 active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-50"
                 >
                   <Gift className="size-4" />
                   Send Tip
@@ -247,7 +247,7 @@ export default function SendTipModal({
                 <button
                   type="button"
                   onClick={resetState}
-                  className="bg-[linear-gradient(135deg,#9011FF_0%,#B78CFF_100%)] px-8 py-2.5 text-sm font-semibold text-foreground hover:opacity-95"
+                  className="bg-brutal-violet px-8 py-2.5 text-sm font-semibold text-foreground hover:opacity-95"
                 >
                   Done
                 </button>

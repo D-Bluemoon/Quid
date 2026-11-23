@@ -1,7 +1,7 @@
 import { ChevronDown, ChevronUp, Check } from "lucide-react";
 
 const INPUT_CLASSES =
-  "w-full  border border-foreground/30 bg-[#100D1C] px-3 py-2.5 text-sm text-foreground placeholder:text-foreground/30 outline-none transition-colors focus:border-[#8B5CF6]/60";
+  "w-full  border border-foreground/30 bg-card px-3 py-2.5 text-sm text-foreground placeholder:text-foreground/30 outline-none transition-colors focus:border-brutal-violet/60";
 
 export function FieldLabel({
   children,
@@ -93,7 +93,7 @@ export function SelectField({
         className={`${INPUT_CLASSES} appearance-none pr-9`}
       >
         {options.map((option) => (
-          <option key={option} value={option} className="bg-[#100D1C]">
+          <option key={option} value={option} className="bg-card">
             {option}
           </option>
         ))}
@@ -190,7 +190,7 @@ export function Checkbox({
         onClick={() => onChange(!checked)}
         className={`flex size-4 shrink-0 items-center justify-center rounded border transition-colors ${
           checked
-            ? "border-[#8B5CF6] bg-[#8B5CF6]"
+            ? "border-brutal-violet bg-brutal-violet"
             : "border-white/20 bg-transparent"
         }`}
       >
@@ -218,7 +218,7 @@ export function RadioCard({
       onClick={onSelect}
       className={`flex-1  border p-4 text-left transition-colors ${
         selected
-          ? "border-[#8B5CF6] bg-[#8B5CF6]/5"
+          ? "border-brutal-violet bg-brutal-violet/5"
           : "border-foreground/30 bg-transparent hover:border-white/20"
       }`}
     >
@@ -226,7 +226,7 @@ export function RadioCard({
         <span className="text-sm font-semibold text-foreground">{title}</span>
         <span
           className={`flex size-4 shrink-0 items-center justify-center rounded-full border ${
-            selected ? "border-[#8B5CF6] bg-[#8B5CF6]" : "border-white/30"
+            selected ? "border-brutal-violet bg-brutal-violet" : "border-white/30"
           }`}
         >
           {selected ? <Check className="size-2.5 text-foreground" /> : null}

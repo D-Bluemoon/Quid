@@ -44,8 +44,8 @@ export default function RequireRole({
     return (
       <div className="flex h-screen items-center justify-center bg-background brutal-grid-bg text-foreground">
         <div className="text-center">
-          <div className="mx-auto mb-4 h-8 w-8 animate-spin rounded-full border-2 border-[#9011FF] border-t-transparent" />
-          <p className="text-sm text-[#8C86B8]">Checking your account type…</p>
+          <div className="mx-auto mb-4 h-8 w-8 animate-spin rounded-full border-2 border-brutal-violet border-t-transparent" />
+          <p className="text-sm text-muted-foreground">Checking your account type…</p>
         </div>
       </div>
     );

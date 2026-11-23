@@ -88,7 +88,7 @@ export default function ParticipantPreviewModal({
           <ol className="flex flex-col gap-3">
             {data.tasks.map((task, index) => (
               <li key={task.id} className="flex gap-3">
-                <span className="flex size-5 shrink-0 items-center justify-center rounded-full bg-[#8B5CF6]/20 text-xs font-semibold text-foreground">
+                <span className="flex size-5 shrink-0 items-center justify-center rounded-full bg-brutal-violet/20 text-xs font-semibold text-foreground">
                   {index + 1}
                 </span>
                 <div className="min-w-0">

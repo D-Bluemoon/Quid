@@ -31,9 +31,9 @@ export default function WizardStepper({
               <span
                 className={`flex size-5 shrink-0 items-center justify-center rounded-full text-xs font-semibold ${
                   isCompleted
-                    ? "bg-[#8B5CF6] text-foreground"
+                    ? "bg-brutal-violet text-foreground"
                     : isCurrent
-                      ? "bg-[#8B5CF6] text-foreground"
+                      ? "bg-brutal-violet text-foreground"
                       : "bg-white/10 text-muted-foreground"
                 }`}
               >

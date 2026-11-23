@@ -7,6 +7,9 @@ mod types;
 use error::MilestoneEscrowError;
 use types::{DataKey, Milestone, MilestoneStatus, Program, ProgramStatus};
 
+const TTL_THRESHOLD_LEDGERS: u32 = 2_592_000;
+const TTL_EXTEND_TO_LEDGERS: u32 = 5_184_000;
+
 #[contractevent(topics = ["program", "created"])]
 pub struct ProgramCreatedEvent {
     pub program_id: u64,
@@ -57,6 +60,7 @@ impl QuidMilestoneEscrowContract {
     /// Set the contract admin. Can only run once, and the admin must sign so
     /// nobody can front-run initialisation with someone else's address.
     pub fn initialize(env: Env, admin: Address) -> Result<(), MilestoneEscrowError> {
+        Self::bump_instance(&env);
         admin.require_auth();
 
         if env.storage().instance().has(&DataKey::Admin) {
@@ -68,6 +72,7 @@ impl QuidMilestoneEscrowContract {
     }
 
     pub fn get_admin(env: Env) -> Result<Address, MilestoneEscrowError> {
+        Self::bump_instance(&env);
         env.storage()
             .instance()
             .get(&DataKey::Admin)
@@ -80,6 +85,7 @@ impl QuidMilestoneEscrowContract {
         caller: Address,
         new_admin: Address,
     ) -> Result<(), MilestoneEscrowError> {
+        Self::bump_instance(&env);
         Self::require_admin(&env, &caller)?;
         env.storage().instance().set(&DataKey::Admin, &new_admin);
         Ok(())
@@ -88,6 +94,7 @@ impl QuidMilestoneEscrowContract {
     // ── Status helpers ────────────────────────────────────────────────────
 
     pub fn get_program_status(env: Env) -> ProgramStatus {
+        Self::bump_instance(&env);
         env.storage()
             .instance()
             .get(&DataKey::ProgramStatus)
@@ -103,6 +110,7 @@ impl QuidMilestoneEscrowContract {
         caller: Address,
         status: ProgramStatus,
     ) -> Result<(), MilestoneEscrowError> {
+        Self::bump_instance(&env);
         Self::require_admin(&env, &caller)?;
         env.storage()
             .instance()
@@ -111,6 +119,7 @@ impl QuidMilestoneEscrowContract {
     }
 
     pub fn get_milestone_status(env: Env) -> MilestoneStatus {
+        Self::bump_instance(&env);
         env.storage()
             .instance()
             .get(&DataKey::MilestoneStatus)
@@ -123,6 +132,7 @@ impl QuidMilestoneEscrowContract {
         caller: Address,
         status: MilestoneStatus,
     ) -> Result<(), MilestoneEscrowError> {
+        Self::bump_instance(&env);
         Self::require_admin(&env, &caller)?;
         env.storage()
             .instance()
@@ -131,6 +141,7 @@ impl QuidMilestoneEscrowContract {
     }
 
     pub fn get_program_count(env: Env) -> u64 {
+        Self::bump_instance(&env);
         env.storage()
             .instance()
             .get(&DataKey::ProgramCount)
@@ -148,6 +159,7 @@ impl QuidMilestoneEscrowContract {
         reviewer: Option<Address>,
         metadata_cid: Option<String>,
     ) -> Result<u64, MilestoneEscrowError> {
+        Self::bump_instance(&env);
         sponsor.require_auth();
 
         if total_amount <= 0 {
@@ -189,6 +201,7 @@ impl QuidMilestoneEscrowContract {
         env.storage()
             .persistent()
             .set(&DataKey::Program(program_id), &program);
+        Self::bump_program(&env, program_id);
 
         ProgramCreatedEvent {
             program_id,
@@ -207,10 +220,14 @@ impl QuidMilestoneEscrowContract {
     }
 
     pub fn get_program(env: Env, program_id: u64) -> Result<Program, MilestoneEscrowError> {
-        env.storage()
+        Self::bump_instance(&env);
+        let program = env
+            .storage()
             .persistent()
             .get(&DataKey::Program(program_id))
-            .ok_or(MilestoneEscrowError::ProgramNotFound)
+            .ok_or(MilestoneEscrowError::ProgramNotFound)?;
+        Self::bump_program(&env, program_id);
+        Ok(program)
     }
 
     pub fn add_milestone(
@@ -221,6 +238,7 @@ impl QuidMilestoneEscrowContract {
         due_at: u64,
         metadata_cid: String,
     ) -> Result<u64, MilestoneEscrowError> {
+        Self::bump_instance(&env);
         let mut program = Self::get_program(env.clone(), program_id)?;
         program.sponsor.require_auth();
 
@@ -257,9 +275,11 @@ impl QuidMilestoneEscrowContract {
         env.storage()
             .persistent()
             .set(&DataKey::Milestone(program_id, milestone_id), &milestone);
+        Self::bump_milestone(&env, program_id, milestone_id);
         env.storage()
             .persistent()
             .set(&DataKey::Program(program_id), &program);
+        Self::bump_program(&env, program_id);
 
         MilestoneAddedEvent {
             program_id,
@@ -276,10 +296,14 @@ impl QuidMilestoneEscrowContract {
         program_id: u64,
         milestone_id: u64,
     ) -> Result<Milestone, MilestoneEscrowError> {
-        env.storage()
+        Self::bump_instance(&env);
+        let milestone = env
+            .storage()
             .persistent()
             .get(&DataKey::Milestone(program_id, milestone_id))
-            .ok_or(MilestoneEscrowError::MilestoneNotFound)
+            .ok_or(MilestoneEscrowError::MilestoneNotFound)?;
+        Self::bump_milestone(&env, program_id, milestone_id);
+        Ok(milestone)
     }
 
     pub fn approve_milestone(
@@ -288,6 +312,7 @@ impl QuidMilestoneEscrowContract {
         milestone_id: u64,
         approver: Address,
     ) -> Result<(), MilestoneEscrowError> {
+        Self::bump_instance(&env);
         approver.require_auth();
 
         let mut program = Self::get_program(env.clone(), program_id)?;
@@ -319,6 +344,7 @@ impl QuidMilestoneEscrowContract {
         env.storage()
             .persistent()
             .set(&DataKey::Milestone(program_id, milestone_id), &milestone);
+        Self::bump_milestone(&env, program_id, milestone_id);
 
         program.released_amount = program
             .released_amount
@@ -347,6 +373,7 @@ impl QuidMilestoneEscrowContract {
         env.storage()
             .persistent()
             .set(&DataKey::Program(program_id), &program);
+        Self::bump_program(&env, program_id);
 
         Ok(())
     }
@@ -356,6 +383,7 @@ impl QuidMilestoneEscrowContract {
         program_id: u64,
         sponsor: Address,
     ) -> Result<(), MilestoneEscrowError> {
+        Self::bump_instance(&env);
         sponsor.require_auth();
 
         let mut program = Self::get_program(env.clone(), program_id)?;
@@ -381,6 +409,7 @@ impl QuidMilestoneEscrowContract {
         env.storage()
             .persistent()
             .set(&DataKey::Program(program_id), &program);
+        Self::bump_program(&env, program_id);
 
         ProgramCancelledEvent {
             program_id,
@@ -399,6 +428,34 @@ impl QuidMilestoneEscrowContract {
     }
 
     // ── Internal ──────────────────────────────────────────────────────────
+
+    fn bump_instance(env: &Env) {
+        env.storage()
+            .instance()
+            .extend_ttl(TTL_THRESHOLD_LEDGERS, TTL_EXTEND_TO_LEDGERS);
+    }
+
+    fn bump_program(env: &Env, program_id: u64) {
+        let key = DataKey::Program(program_id);
+        if env.storage().persistent().has(&key) {
+            env.storage().persistent().extend_ttl(
+                &key,
+                TTL_THRESHOLD_LEDGERS,
+                TTL_EXTEND_TO_LEDGERS,
+            );
+        }
+    }
+
+    fn bump_milestone(env: &Env, program_id: u64, milestone_id: u64) {
+        let key = DataKey::Milestone(program_id, milestone_id);
+        if env.storage().persistent().has(&key) {
+            env.storage().persistent().extend_ttl(
+                &key,
+                TTL_THRESHOLD_LEDGERS,
+                TTL_EXTEND_TO_LEDGERS,
+            );
+        }
+    }
 
     /// Issue #293: `caller` must authorise the invocation (`require_auth`) AND
     /// be the stored admin. Signing alone is not enough, and neither is

@@ -44,7 +44,7 @@ export default function PublishSuccess({
         {questId ? (
           <Link
             href={`/creator/quests/${questId}`}
-            className="flex items-center gap-1.5  bg-[#8B5CF6] px-4 py-2.5 text-sm font-semibold text-foreground transition-colors hover:bg-[#7c0de0]"
+            className="flex items-center gap-1.5  bg-brutal-violet px-4 py-2.5 text-sm font-semibold text-foreground transition-colors hover:bg-brutal-violet"
           >
             View mission
             <ArrowRight className="size-4" />

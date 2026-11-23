@@ -51,7 +51,7 @@ export default function TasksStep({
       {tasks.map((task, index) => (
         <div
           key={task.id}
-          className=" border border-foreground/30 bg-[#100D1C]/60 p-4"
+          className=" border border-foreground/30 bg-card/60 p-4"
         >
           <div className="mb-4 flex items-center justify-between gap-2">
             <div className="flex items-center gap-2 text-xs font-semibold tracking-wide text-muted-foreground">

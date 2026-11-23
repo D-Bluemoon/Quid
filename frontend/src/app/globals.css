@@ -44,6 +44,22 @@
   --color-brutal-orange: var(--brutal-orange);
   --color-brutal-violet: var(--brutal-violet);
   --color-brutal-blue: var(--brutal-blue);
+  --color-brutal-ink: var(--brutal-ink);
+  --color-brutal-paper: var(--brutal-paper);
+  --color-brutal-paper-alt: var(--brutal-paper-alt);
+
+  --text-brutal-label: 0.75rem;
+  --text-brutal-label--line-height: 1rem;
+  --text-brutal-label--letter-spacing: 0.08em;
+  --font-weight-brutal: 900;
+  --tracking-brutal: 0.08em;
+
+  --spacing-brutal-border: var(--brutal-border-width);
+  --spacing-brutal-offset: var(--brutal-offset);
+  --spacing-brutal-offset-lg: var(--brutal-offset-lg);
+  --spacing-brutal-grid: var(--brutal-grid-size);
+
+  --radius-brutal: var(--radius);
   --radius-sm: 0px;
   --radius-md: 0px;
   --radius-lg: 0px;
@@ -51,6 +67,10 @@
   --radius-2xl: 0px;
   --radius-3xl: 0px;
   --radius-4xl: 0px;
+
+  --shadow-brutal: var(--brutal-shadow);
+  --shadow-brutal-lg: var(--brutal-shadow-lg);
+  --shadow-brutal-hover: var(--brutal-shadow-hover);
 }
 
 /* Brutalist design system — flat colors, hard shadows, thick borders */
@@ -94,9 +114,17 @@
   --brutal-orange: #ff6b00;
   --brutal-violet: #7c3aed;
   --brutal-blue: #2563eb;
-  --brutal-shadow: 4px 4px 0 0 #0a0a0a;
-  --brutal-shadow-lg: 8px 8px 0 0 #0a0a0a;
-  --brutal-border: 3px solid #0a0a0a;
+  --brutal-ink: #0a0a0a;
+  --brutal-paper: #f4f0e6;
+  --brutal-paper-alt: #fffdf5;
+  --brutal-shadow: 4px 4px 0 0 var(--foreground);
+  --brutal-shadow-lg: 8px 8px 0 0 var(--foreground);
+  --brutal-shadow-hover: 6px 6px 0 0 var(--foreground);
+  --brutal-border: 3px solid var(--foreground);
+  --brutal-border-width: 3px;
+  --brutal-offset: 4px;
+  --brutal-offset-lg: 8px;
+  --brutal-grid-size: 24px;
 }
 
 .dark {
@@ -126,9 +154,10 @@
   --sidebar-accent-foreground: #0a0a0a;
   --sidebar-border: #fffdf5;
   --sidebar-ring: #ffe600;
-  --brutal-shadow: 4px 4px 0 0 #fffdf5;
-  --brutal-shadow-lg: 8px 8px 0 0 #fffdf5;
-  --brutal-border: 3px solid #fffdf5;
+  --brutal-shadow: 4px 4px 0 0 var(--foreground);
+  --brutal-shadow-lg: 8px 8px 0 0 var(--foreground);
+  --brutal-shadow-hover: 6px 6px 0 0 var(--foreground);
+  --brutal-border: 3px solid var(--foreground);
 }
 
 @layer base {
@@ -157,17 +186,24 @@
   .brutal-grid-bg {
     background-color: var(--background);
     background-image:
-      linear-gradient(#0a0a0a08 1px, transparent 1px),
-      linear-gradient(90deg, #0a0a0a08 1px, transparent 1px);
-    background-size: 24px 24px;
+      linear-gradient(
+        color-mix(in srgb, var(--foreground) 3%, transparent) 1px,
+        transparent 1px
+      ),
+      linear-gradient(
+        90deg,
+        color-mix(in srgb, var(--foreground) 3%, transparent) 1px,
+        transparent 1px
+      );
+    background-size: var(--brutal-grid-size) var(--brutal-grid-size);
   }
   .brutal-stripe {
     background: repeating-linear-gradient(
       -45deg,
-      #0a0a0a,
-      #0a0a0a 2px,
+      var(--foreground),
+      var(--foreground) 2px,
       transparent 2px,
-      transparent 8px
+      transparent var(--brutal-offset-lg)
     );
   }
 }

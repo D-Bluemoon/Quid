@@ -65,6 +65,13 @@ pub struct MissionCancelEvent {
     pub mission_id: u64,
 }
 
+#[contractevent(topics = ["mission", "meta"])]
+pub struct MissionMetadataUpdatedEvent {
+    pub mission_id: u64,
+    pub title: String,
+    pub description_cid: String,
+}
+
 #[contracttype]
 pub struct Reward {
     pub reward_token: Address,
@@ -109,6 +116,9 @@ pub struct FeeChargedEvent {
 pub trait FeeCollector {
     /// Fee owed on `gross_amount` at the vault's current rate.
     fn compute_fee(env: Env, gross_amount: i128) -> i128;
+
+    /// Fee owed for a specific token, applying tiers/caps when configured.
+    fn compute_fee_for(env: Env, token: Address, gross_amount: i128) -> i128;
 
     /// Pull an exact fee amount from `from` into the vault.
     fn deposit_fee(env: Env, from: Address, token: Address, amount: i128);
@@ -208,7 +218,7 @@ impl QuidStoreContract {
 
         // The protocol fee is charged on top of the escrow, so the full reward
         // pool stays available to hunters. Zero when no collector is configured.
-        let fee = Self::quote_protocol_fee(&env, total_needed)?;
+        let fee = Self::quote_protocol_fee(&env, &reward.reward_token, total_needed)?;
         let owner_debit = total_needed
             .checked_add(fee)
             .ok_or(QuidError::NegativeReward)?;
@@ -594,6 +604,46 @@ impl QuidStoreContract {
         Ok(())
     }
 
+    /// Edit mission metadata before the first submission arrives.
+    pub fn update_mission_metadata(
+        env: Env,
+        mission_id: u64,
+        title: Option<String>,
+        description_cid: Option<String>,
+    ) -> Result<(), QuidError> {
+        let mut mission = Self::get_mission(env.clone(), mission_id)?;
+        mission.owner.require_auth();
+
+        if mission.participants_count != 0 {
+            return Err(QuidError::InvalidState);
+        }
+
+        if let Some(ref t) = title {
+            Self::validate_mission_params(t, mission.reward_amount)?;
+            mission.title = t.clone();
+        }
+
+        if let Some(ref cid) = description_cid {
+            mission.description_cid = cid.clone();
+        }
+
+        env.storage()
+            .persistent()
+            .set(&DataKey::Mission(mission_id), &mission);
+        env.storage()
+            .persistent()
+            .extend_ttl(&DataKey::Mission(mission_id), 5184000, 5184000);
+
+        MissionMetadataUpdatedEvent {
+            mission_id,
+            title: mission.title.clone(),
+            description_cid: mission.description_cid.clone(),
+        }
+        .publish(&env);
+
+        Ok(())
+    }
+
     /// Reclaim the escrow of a mission whose deadline has passed.
     ///
     /// Deliberately permissionless: once the ledger timestamp reaches
@@ -920,7 +970,11 @@ impl QuidStoreContract {
     ///
     /// Missions created before a collector is set stay fee-free, so wiring the
     /// vault up is a non-breaking change for existing deployments.
-    fn quote_protocol_fee(env: &Env, gross_amount: i128) -> Result<i128, QuidError> {
+    fn quote_protocol_fee(
+        env: &Env,
+        token: &Address,
+        gross_amount: i128,
+    ) -> Result<i128, QuidError> {
         let Some(collector) = env
             .storage()
             .instance()
@@ -929,7 +983,7 @@ impl QuidStoreContract {
             return Ok(0);
         };
 
-        let fee = FeeCollectorClient::new(env, &collector).compute_fee(&gross_amount);
+        let fee = FeeCollectorClient::new(env, &collector).compute_fee_for(token, &gross_amount);
         if fee < 0 || fee > gross_amount {
             return Err(QuidError::InvalidAmount);
         }

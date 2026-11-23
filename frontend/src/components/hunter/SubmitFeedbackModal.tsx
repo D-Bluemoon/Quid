@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useCallback, useEffect, useId, useRef, useState } from "react";
 import { uploadFeedbackToIpfs } from "@/lib/upload-api";
 import { submitFeedbackToContract, SubmissionReceipt } from "@/lib/soroban-client";
 import { useWallet } from "@/context/WalletProvider";
@@ -47,16 +47,122 @@ export default function SubmitFeedbackModal({
   const [uploadedCid, setUploadedCid] = useState<string | null>(null);
   const [proofFileCid, setProofFileCid] = useState<string | null>(null);
 
-  if (!isOpen) return null;
+  const panelRef = useRef<HTMLDivElement | null>(null);
+  const previouslyFocusedRef = useRef<HTMLElement | null>(null);
+  const onCloseRef = useRef(onClose);
 
-  const resetState = () => {
+  const titleId = useId();
+  const descriptionId = useId();
+  const feedbackId = useId();
+  const feedbackHelpId = useId();
+  const proofLabelId = useId();
+  const proofUrlId = useId();
+  const ratingId = useId();
+  const errorId = useId();
+
+  useEffect(() => {
+    onCloseRef.current = onClose;
+  }, [onClose]);
+
+  const getFocusableElements = useCallback(() => {
+    const panel = panelRef.current;
+    if (!panel) return [] as HTMLElement[];
+
+    return Array.from(
+      panel.querySelectorAll<HTMLElement>(
+        'a[href], area[href], button:not([disabled]), input:not([disabled]):not([type="hidden"]), select:not([disabled]), textarea:not([disabled]), iframe, object, embed, [contenteditable="true"], [tabindex]:not([tabindex="-1"])',
+      ),
+    ).filter(
+      (element) =>
+        element.getAttribute("aria-hidden") !== "true" && element.getClientRects().length > 0,
+    );
+  }, []);
+
+  const resetState = useCallback(() => {
     setStep("form");
     setErrorMessage(null);
     setReceipt(null);
     setUploadedCid(null);
     setProofFileCid(null);
-    onClose();
-  };
+    onCloseRef.current();
+  }, []);
+
+  useEffect(() => {
+    if (!isOpen) return;
+
+    previouslyFocusedRef.current =
+      document.activeElement instanceof HTMLElement ? document.activeElement : null;
+
+    const panel = panelRef.current;
+    const focusableElements = getFocusableElements();
+    const initialFocusElement =
+      panel?.querySelector<HTMLElement>("[data-autofocus]") ?? focusableElements[0] ?? panel;
+    initialFocusElement?.focus();
+
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        event.preventDefault();
+        resetState();
+        return;
+      }
+
+      if (event.key !== "Tab") return;
+
+      const focusable = getFocusableElements();
+      if (focusable.length === 0) {
+        event.preventDefault();
+        panelRef.current?.focus();
+        return;
+      }
+
+      const first = focusable[0];
+      const last = focusable[focusable.length - 1];
+      const activeElement = document.activeElement;
+
+      if (!panelRef.current?.contains(activeElement) || activeElement === panelRef.current) {
+        event.preventDefault();
+        (event.shiftKey ? last : first).focus();
+        return;
+      }
+
+      if (event.shiftKey && activeElement === first) {
+        event.preventDefault();
+        last.focus();
+      } else if (!event.shiftKey && activeElement === last) {
+        event.preventDefault();
+        first.focus();
+      }
+    };
+
+    document.addEventListener("keydown", handleKeyDown);
+
+    return () => {
+      document.removeEventListener("keydown", handleKeyDown);
+      const previouslyFocused = previouslyFocusedRef.current;
+      if (previouslyFocused?.isConnected) previouslyFocused.focus();
+      previouslyFocusedRef.current = null;
+    };
+  }, [getFocusableElements, isOpen, resetState]);
+
+  useEffect(() => {
+    if (!isOpen || !panelRef.current || panelRef.current.contains(document.activeElement)) return;
+
+    const stepFocusElement = panelRef.current.querySelector<HTMLElement>(
+      "[data-step-focus], [data-autofocus]",
+    );
+    (stepFocusElement ?? panelRef.current).focus();
+  }, [isOpen, step]);
+
+  if (!isOpen) return null;
+
+  const statusMessage =
+    step === "uploading_ipfs"
+      ? "Step 1 of 2: uploading feedback and proof to IPFS."
+      : step === "signing_chain"
+        ? "Step 2 of 2: submitting the transaction to Soroban. Approve the transaction in Freighter."
+        : step === "success"
+          ? "Feedback submitted successfully."
+          : "";
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -165,23 +271,38 @@ export default function SubmitFeedbackModal({
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/75 p-4 backdrop-blur-sm">
-      <div className="relative w-full max-w-xl  border border-white/15 bg-[#120F1D] p-6 text-foreground shadow-2xl md:p-8">
+      <div
+        ref={panelRef}
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby={titleId}
+        aria-describedby={descriptionId}
+        tabIndex={-1}
+        className="relative w-full max-w-xl  border border-white/15 bg-card p-6 text-foreground shadow-2xl md:p-8"
+      >
+        <div className="sr-only" role="status" aria-live="polite" aria-atomic="true">
+          {statusMessage}
+        </div>
         {/* Header */}
         <div className="flex items-start justify-between border-b border-foreground/30 pb-4">
           <div>
             <span className="text-xs font-semibold uppercase tracking-wider text-foreground">
               Submit Feedback & Proof
             </span>
-            <h2 className="mt-1 text-xl font-bold text-foreground">{quest.title}</h2>
-            <p className="text-sm text-muted-foreground">
+            <h2 id={titleId} className="mt-1 text-xl font-bold text-foreground">
+              {quest.title}
+            </h2>
+            <p id={descriptionId} className="text-sm text-muted-foreground">
               Reward: <span className="font-semibold text-foreground">{quest.reward}</span> • {quest.brand}
             </p>
           </div>
           <button
+            type="button"
             onClick={resetState}
+            aria-label="Close submit feedback dialog"
             className=" p-1 text-muted-foreground hover:bg-white/10 hover:text-foreground"
           >
-            <X className="size-5" />
+            <X className="size-5" aria-hidden="true" />
           </button>
         </div>
 
@@ -191,27 +312,31 @@ export default function SubmitFeedbackModal({
             <form onSubmit={handleSubmit} className="space-y-5">
               {/* Feedback text area */}
               <div>
-                <label className="block text-sm font-medium text-foreground">
+                <label htmlFor={feedbackId} className="block text-sm font-medium text-foreground">
                   Feedback & Findings <span className="text-red-400">*</span>
                 </label>
-                <p className="mb-2 text-xs text-muted-foreground">
+                <p id={feedbackHelpId} className="mb-2 text-xs text-muted-foreground">
                   Provide constructive, honest review points, bug reports, and UX suggestions.
                 </p>
                 <textarea
+                  id={feedbackId}
                   rows={4}
                   required
                   value={feedbackText}
                   onChange={(e) => setFeedbackText(e.target.value)}
+                  aria-describedby={`${feedbackHelpId}${errorMessage ? ` ${errorId}` : ""}`}
+                  aria-invalid={Boolean(errorMessage)}
+                  data-autofocus
                   placeholder="Detailed observations, test steps performed, bugs discovered, or dApp feedback..."
-                  className="w-full  border border-white/15 bg-white/[0.04] p-3 text-sm text-foreground placeholder-white/30 focus:border-[#B78CFF] focus:outline-none"
+                  className="w-full  border border-white/15 bg-white/[0.04] p-3 text-sm text-foreground placeholder-white/30 focus:border-brutal-violet focus:outline-none"
                 />
               </div>
 
               {/* Proof File Upload */}
-              <div>
-                <label className="block text-sm font-medium text-white/90">
+              <div role="group" aria-labelledby={proofLabelId}>
+                <span id={proofLabelId} className="block text-sm font-medium text-white/90">
                   Proof File (Optional)
-                </label>
+                </span>
                 <p className="mb-2 text-xs text-white/50">
                   Attach a screenshot, screen recording, or PDF as pinned, verifiable proof.
                 </p>
@@ -224,36 +349,39 @@ export default function SubmitFeedbackModal({
 
               {/* Proof URL */}
               <div>
-                <label className="block text-sm font-medium text-foreground">
+                <label htmlFor={proofUrlId} className="block text-sm font-medium text-foreground">
                   Proof / Screenshots URL (Optional)
                 </label>
                 <input
+                  id={proofUrlId}
                   type="url"
                   value={proofUrl}
                   onChange={(e) => setProofUrl(e.target.value)}
                   placeholder="https://github.com/... or Loom / screenshot URL"
-                  className="mt-1 w-full  border border-white/15 bg-white/[0.04] p-3 text-sm text-foreground placeholder-white/30 focus:border-[#B78CFF] focus:outline-none"
+                  className="mt-1 w-full  border border-white/15 bg-white/[0.04] p-3 text-sm text-foreground placeholder-white/30 focus:border-brutal-violet focus:outline-none"
                 />
               </div>
 
               {/* Sentiment / Rating */}
               <div>
-                <label className="block text-sm font-medium text-foreground">
+                <label htmlFor={ratingId} className="block text-sm font-medium text-foreground">
                   Overall Rating: {sentiment} / 5
                 </label>
                 <input
+                  id={ratingId}
                   type="range"
                   min="1"
                   max="5"
                   value={sentiment}
                   onChange={(e) => setSentiment(parseInt(e.target.value, 10))}
-                  className="mt-2 w-full accent-[#B78CFF]"
+                  aria-valuetext={`${sentiment} out of 5`}
+                  className="mt-2 w-full accent-brutal-violet"
                 />
               </div>
 
               {/* Stake UX Explanation */}
-              <div className="flex gap-3  border border-[#B78CFF]/30 bg-[#B78CFF]/10 p-4 text-sm text-foreground">
-                <ShieldCheck className="size-5 shrink-0 text-foreground" />
+              <div className="flex gap-3  border border-brutal-violet/30 bg-brutal-violet/10 p-4 text-sm text-foreground">
+                <ShieldCheck className="size-5 shrink-0 text-foreground" aria-hidden="true" />
                 <div>
                   <p className="font-semibold text-foreground">Refundable Anti-Spam Stake (1 XLM)</p>
                   <p className="mt-1 text-xs text-muted-foreground">
@@ -263,8 +391,14 @@ export default function SubmitFeedbackModal({
               </div>
 
               {errorMessage && (
-                <div className="flex items-center gap-2  border border-red-500/30 bg-red-500/10 p-3 text-xs text-red-300">
-                  <AlertCircle className="size-4 shrink-0 text-red-400" />
+                <div
+                  id={errorId}
+                  role="alert"
+                  aria-live="assertive"
+                  aria-atomic="true"
+                  className="flex items-center gap-2  border border-red-500/30 bg-red-500/10 p-3 text-xs text-red-300"
+                >
+                  <AlertCircle className="size-4 shrink-0 text-red-400" aria-hidden="true" />
                   <span>{errorMessage}</span>
                 </div>
               )}
@@ -280,9 +414,9 @@ export default function SubmitFeedbackModal({
                 </button>
                 <button
                   type="submit"
-                  className="inline-flex items-center gap-2  bg-[linear-gradient(135deg,#9011FF_0%,#B78CFF_100%)] px-6 py-2.5 text-sm font-semibold text-foreground shadow-lg transition-transform hover:opacity-95 active:scale-[0.98]"
+                  className="inline-flex items-center gap-2  bg-brutal-violet px-6 py-2.5 text-sm font-semibold text-foreground shadow-lg transition-transform hover:opacity-95 active:scale-[0.98]"
                 >
-                  <UploadCloud className="size-4" />
+                  <UploadCloud className="size-4" aria-hidden="true" />
                   Upload & Submit On-Chain
                 </button>
               </div>
@@ -290,8 +424,8 @@ export default function SubmitFeedbackModal({
           )}
 
           {step === "uploading_ipfs" && (
-            <div className="py-10 text-center space-y-4">
-              <Loader2 className="mx-auto size-10 animate-spin text-foreground" />
+            <div data-step-focus tabIndex={-1} className="py-10 text-center space-y-4">
+              <Loader2 className="mx-auto size-10 animate-spin text-foreground" aria-hidden="true" />
               <h3 className="text-lg font-semibold">Step 1: Uploading to IPFS...</h3>
               <p className="max-w-md mx-auto text-sm text-muted-foreground">
                 Packaging feedback and pinning proof to backend IPFS node to generate content identifier (CID).
@@ -300,8 +434,8 @@ export default function SubmitFeedbackModal({
           )}
 
           {step === "signing_chain" && (
-            <div className="py-10 text-center space-y-4">
-              <Loader2 className="mx-auto size-10 animate-spin text-foreground" />
+            <div data-step-focus tabIndex={-1} className="py-10 text-center space-y-4">
+              <Loader2 className="mx-auto size-10 animate-spin text-foreground" aria-hidden="true" />
               <h3 className="text-lg font-semibold">Step 2: Submitting to Soroban Contract...</h3>
               <p className="max-w-md mx-auto text-sm text-muted-foreground">
                 Please approve the transaction in your Freighter wallet. CID <code className="text-foreground">{uploadedCid?.slice(0, 16)}...</code> will be recorded on-chain.
@@ -310,8 +444,8 @@ export default function SubmitFeedbackModal({
           )}
 
           {step === "success" && receipt && (
-            <div className="py-6 text-center space-y-4">
-              <CheckCircle2 className="mx-auto size-14 text-emerald-400" />
+            <div data-step-focus tabIndex={-1} className="py-6 text-center space-y-4">
+              <CheckCircle2 className="mx-auto size-14 text-emerald-400" aria-hidden="true" />
               <h3 className="text-xl font-bold text-foreground">Feedback Submitted Successfully!</h3>
               <p className="text-sm text-foreground/75">
                 Your proof has been pinned to IPFS and submitted to the <code className="text-foreground">quid-store</code> smart contract.
@@ -336,7 +470,7 @@ export default function SubmitFeedbackModal({
                 <button
                   type="button"
                   onClick={resetState}
-                  className=" bg-[linear-gradient(135deg,#9011FF_0%,#B78CFF_100%)] px-8 py-2.5 text-sm font-semibold text-foreground hover:opacity-95"
+                  className=" bg-brutal-violet px-8 py-2.5 text-sm font-semibold text-foreground hover:opacity-95"
                 >
                   Done
                 </button>
@@ -345,8 +479,15 @@ export default function SubmitFeedbackModal({
           )}
 
           {step === "error" && (
-            <div className="py-6 text-center space-y-4">
-              <AlertCircle className="mx-auto size-12 text-red-400" />
+            <div
+              data-step-focus
+              tabIndex={-1}
+              role="alert"
+              aria-live="assertive"
+              aria-atomic="true"
+              className="py-6 text-center space-y-4"
+            >
+              <AlertCircle className="mx-auto size-12 text-red-400" aria-hidden="true" />
               <h3 className="text-lg font-bold text-foreground">Submission Failed</h3>
               <p className="text-sm text-red-300 max-w-md mx-auto">{errorMessage}</p>
 

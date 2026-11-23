@@ -14,7 +14,7 @@ export const brutalHeading =
 export const brutalMuted = "text-muted-foreground";
 
 export const brutalBtnPrimary =
-  "brutal-border brutal-shadow cursor-pointer bg-brutal-pink px-5 py-2.5 text-sm font-bold uppercase tracking-wide text-foreground transition hover:translate-x-[-2px] hover:translate-y-[-2px] hover:shadow-[6px_6px_0_0_#0a0a0a]";
+  "brutal-border brutal-shadow cursor-pointer bg-brutal-pink px-5 py-2.5 text-sm font-bold uppercase tracking-wide text-foreground transition hover:translate-x-[-2px] hover:translate-y-[-2px] hover:shadow-brutal-hover";
 
 export const brutalBtnSecondary =
   "brutal-border brutal-shadow cursor-pointer bg-brutal-cyan px-5 py-2.5 text-sm font-bold uppercase tracking-wide text-foreground";

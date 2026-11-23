@@ -77,7 +77,7 @@ export default function RewardsStep({
         </div>
       </div>
 
-      <div className="grid grid-cols-1 gap-4  border border-foreground/30 bg-[#100D1C]/60 p-4 sm:grid-cols-3">
+      <div className="grid grid-cols-1 gap-4  border border-foreground/30 bg-card/60 p-4 sm:grid-cols-3">
         <div>
           <p className="text-xs text-muted-foreground">Total required balance</p>
           <p className="mt-1 text-lg font-semibold text-foreground">

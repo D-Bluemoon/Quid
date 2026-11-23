@@ -11,7 +11,7 @@ export default function ReviewStep({ data }: { data: QuestWizardData }) {
         This is what participants need to understand and complete your quest.
       </p>
 
-      <div className=" border border-foreground/30 bg-[#100D1C]/60 p-4">
+      <div className=" border border-foreground/30 bg-card/60 p-4">
         <p className="mb-3 text-sm font-semibold text-foreground">Mission details</p>
         <div className="flex flex-col gap-3 text-sm">
           <div>
@@ -33,7 +33,7 @@ export default function ReviewStep({ data }: { data: QuestWizardData }) {
       </div>
 
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-        <div className=" border border-foreground/30 bg-[#100D1C]/60 p-4">
+        <div className=" border border-foreground/30 bg-card/60 p-4">
           <p className="mb-3 text-sm font-semibold text-foreground">Eligibility</p>
           <div className="flex flex-col gap-3 text-sm">
             <div>
@@ -49,7 +49,7 @@ export default function ReviewStep({ data }: { data: QuestWizardData }) {
           </div>
         </div>
 
-        <div className=" border border-foreground/30 bg-[#100D1C]/60 p-4">
+        <div className=" border border-foreground/30 bg-card/60 p-4">
           <p className="mb-3 text-sm font-semibold text-foreground">Rewards</p>
           <div className="flex flex-col gap-3 text-sm">
             <div>
@@ -73,7 +73,7 @@ export default function ReviewStep({ data }: { data: QuestWizardData }) {
         </div>
       </div>
 
-      <div className=" border border-foreground/30 bg-[#100D1C]/60 p-4">
+      <div className=" border border-foreground/30 bg-card/60 p-4">
         <p className="mb-3 text-sm font-semibold text-foreground">Tasks</p>
         <div className="flex flex-col gap-3 text-sm">
           {data.tasks.map((task, index) => (

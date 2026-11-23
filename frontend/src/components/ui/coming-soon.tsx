@@ -27,7 +27,7 @@ export function ComingSoonBadge({
       className={`inline-flex items-center gap-1.5 border-2 border-dashed border-foreground/60 px-2 py-0.5 text-[10px] font-black uppercase tracking-wide text-muted-foreground ${className}`}
     >
       {showLabel && <span>{config.label}</span>}
-      <span className="bg-brutal-yellow px-1 text-[#0a0a0a]">Soon</span>
+      <span className="bg-brutal-yellow px-1 text-brutal-ink">Soon</span>
     </span>
   );
 }
@@ -53,7 +53,7 @@ export function ComingSoonNavItem({
       <span>{config.label}</span>
       <span
         aria-hidden="true"
-        className="ml-auto mr-1 bg-brutal-yellow px-1 text-[9px] font-black text-[#0a0a0a]"
+        className="ml-auto mr-1 bg-brutal-yellow px-1 text-[9px] font-black text-brutal-ink"
       >
         Soon
       </span>
