@@ -4,10 +4,10 @@ import { Creator, Hunter, Admin } from './roles.decorator';
 import { RolesGuard } from './roles.guard';
 
 class Ctl {
-  @Creator() creatorOnly() {}
-  @Hunter() hunterOnly() {}
-  @Admin() adminOnly() {}
-  open() {}
+  @Creator() creatorOnly(this: void) {}
+  @Hunter() hunterOnly(this: void) {}
+  @Admin() adminOnly(this: void) {}
+  open(this: void) {}
 }
 
 function ctx(handler: () => void, address = 'GADDR') {
