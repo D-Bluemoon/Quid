@@ -17,7 +17,7 @@ export class SorobanRpcService {
 
   constructor(private readonly config: ConfigService) {
     const rpcUrl = this.config.get<string>('RPC_URL') ?? 'http://localhost:8000';
-    this.server = new rpc.Server(rpcUrl);
+    this.server = new rpc.Server(rpcUrl, { allowHttp: rpcUrl.startsWith('http://') });
     const configured = Number(this.config.get<string>('RPC_MAX_CONCURRENCY') ?? DEFAULT_MAX_CONCURRENCY);
     this.maxConcurrency = Number.isFinite(configured) && configured > 0 ? Math.floor(configured) : DEFAULT_MAX_CONCURRENCY;
   }
