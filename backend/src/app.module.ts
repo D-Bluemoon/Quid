@@ -15,6 +15,9 @@ import { UsersModule } from './users/users.module';
 import { NotificationsModule } from './notifications/notifications.module';
 import { VerificationModule } from './verification/verification.module';
 import { WebhooksModule } from './webhooks/webhooks.module';
+import { SorobanModule } from './soroban/soroban.module';
+import { AnchorsModule } from './anchors/anchors.module';
+import { ReportsModule } from './reports/reports.module';
 
 @Module({
   imports: [
@@ -49,6 +52,9 @@ import { WebhooksModule } from './webhooks/webhooks.module';
     // inside each module instead of editing this list. See each README.md.
     VerificationModule,
     WebhooksModule,
+    SorobanModule,
+    AnchorsModule,
+    ReportsModule,
   ],
   controllers: [AppController],
   providers: [
