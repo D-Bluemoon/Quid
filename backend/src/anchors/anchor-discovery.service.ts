@@ -19,25 +19,35 @@ export class AnchorDiscoveryService {
     }
   }
 
-  async list(filter: { country?: string; asset?: string }) {
-    const anchors = await (this.prisma as any).anchor.findMany({ where: { healthy: true } });
-    return anchors.filter((a: any) => {
-      const countryOk = !filter.country || (Array.isArray(a.countries) && a.countries.includes(filter.country));
+  async list(filter: { country?: string; asset?: string }): Promise<Record<string, unknown>[]> {
+    const anchors = (await (this.prisma as any).anchor.findMany({ where: { healthy: true } })) as Record<string, unknown>[];
+    return anchors.filter((a) => {
+      const countries = a.countries;
+      const countryOk = !filter.country || (Array.isArray(countries) && countries.includes(filter.country));
       const assetOk = !filter.asset || this.hasAsset(a, filter.asset);
       return countryOk && assetOk;
     });
   }
 
-  private hasAsset(anchor: any, asset: string): boolean {
-    const assets = anchor.assets as any;
-    const list = Array.isArray(assets) ? assets : assets?.currencies ?? assets?.assets ?? [];
-    return list.some((c: any) => c?.code === asset || c?.asset === asset);
+  private hasAsset(anchor: Record<string, unknown>, asset: string): boolean {
+    const assets = anchor.assets as Record<string, unknown> | unknown[] | undefined;
+    const list: unknown[] = Array.isArray(assets)
+      ? assets
+      : Array.isArray((assets as Record<string, unknown> | undefined)?.currencies)
+        ? ((assets as Record<string, unknown>).currencies as unknown[])
+        : Array.isArray((assets as Record<string, unknown> | undefined)?.assets)
+          ? ((assets as Record<string, unknown>).assets as unknown[])
+          : [];
+    return list.some((c) => {
+      const item = c as Record<string, unknown> | undefined;
+      return item?.code === asset || item?.asset === asset;
+    });
   }
 
   getSeedDomains(): string[] {
     const raw = this.config.get<string>('ANCHOR_DOMAINS') ?? '';
     const parsed = raw.split(',').map((s) => s.trim()).filter(Boolean);
-    return parsed.length ? parsed : ['testanchor.stellar.org'];
+    return parsed.length > 0 ? parsed : ['testanchor.stellar.org'];
   }
 
   async refreshDomain(domain: string): Promise<void> {

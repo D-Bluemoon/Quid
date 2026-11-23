@@ -26,7 +26,9 @@ describe('WebhooksService', () => {
   it('shows secret once and stores hash', async () => {
     prisma.webhookSubscription.count.mockResolvedValue(0);
     (service as any).assertSafeUrl = jest.fn().mockResolvedValue(undefined);
-    prisma.webhookSubscription.create.mockImplementation(async ({ data }: any) => ({ id: '1', ...data }));
+    prisma.webhookSubscription.create.mockImplementation(({ data }: { data: Record<string, unknown> }) =>
+      Promise.resolve({ id: '1', ...data }),
+    );
     const res = await service.create('GOWNER', { url: 'https://example.com/hook', events: ['report.new'] });
     expect(res.secret).toBeDefined();
     expect(res.secretHash).not.toBe(res.secret);

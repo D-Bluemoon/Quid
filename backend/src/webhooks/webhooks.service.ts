@@ -13,7 +13,7 @@ export class WebhooksService {
     if (existing >= 10) throw new ConflictException('max 10 subscriptions per owner');
     await this.assertSafeUrl(body.url);
     const secret = randomBytes(32).toString('hex');
-    const sub = await (this.prisma as any).webhookSubscription.create({
+    const sub = (await (this.prisma as any).webhookSubscription.create({
       data: {
         ownerAddress,
         url: body.url,
@@ -22,18 +22,21 @@ export class WebhooksService {
         secretHash: createHash('sha256').update(secret).digest('hex'),
         active: true,
       },
-    });
+    })) as Record<string, unknown>;
     return { ...sub, secret };
   }
 
-  async list(ownerAddress: string) {
-    return (this.prisma as any).webhookSubscription.findMany({ where: { ownerAddress }, orderBy: { createdAt: 'desc' } });
+  async list(ownerAddress: string): Promise<Record<string, unknown>[]> {
+    return (await (this.prisma as any).webhookSubscription.findMany({
+      where: { ownerAddress },
+      orderBy: { createdAt: 'desc' },
+    })) as Record<string, unknown>[];
   }
 
   async update(ownerAddress: string, id: string, body: { url?: string; events?: string[]; active?: boolean; missionId?: string | null }) {
     const sub = await this.getOwned(ownerAddress, id);
     if (body.url) await this.assertSafeUrl(body.url);
-    return (this.prisma as any).webhookSubscription.update({
+    return (await (this.prisma as any).webhookSubscription.update({
       where: { id: sub.id },
       data: {
         ...(body.url ? { url: body.url } : {}),
@@ -41,10 +44,10 @@ export class WebhooksService {
         ...(typeof body.active === 'boolean' ? { active: body.active } : {}),
         ...(body.missionId !== undefined ? { missionId: body.missionId } : {}),
       },
-    });
+    })) as Record<string, unknown>;
   }
 
-  async remove(ownerAddress: string, id: string) {
+  async remove(ownerAddress: string, id: string): Promise<{ ok: true }> {
     await this.getOwned(ownerAddress, id);
     await (this.prisma as any).webhookSubscription.delete({ where: { id } });
     return { ok: true };
@@ -53,15 +56,17 @@ export class WebhooksService {
   async rotateSecret(ownerAddress: string, id: string) {
     await this.getOwned(ownerAddress, id);
     const secret = randomBytes(32).toString('hex');
-    const sub = await (this.prisma as any).webhookSubscription.update({
+    const sub = (await (this.prisma as any).webhookSubscription.update({
       where: { id },
       data: { secretHash: createHash('sha256').update(secret).digest('hex') },
-    });
+    })) as Record<string, unknown>;
     return { ...sub, secret };
   }
 
-  private async getOwned(ownerAddress: string, id: string) {
-    const sub = await (this.prisma as any).webhookSubscription.findFirst({ where: { id, ownerAddress } });
+  private async getOwned(ownerAddress: string, id: string): Promise<Record<string, unknown>> {
+    const sub = (await (this.prisma as any).webhookSubscription.findFirst({
+      where: { id, ownerAddress },
+    })) as Record<string, unknown> | null;
     if (!sub) throw new NotFoundException('subscription not found');
     return sub;
   }

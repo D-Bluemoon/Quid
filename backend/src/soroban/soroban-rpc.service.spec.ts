@@ -1,17 +1,16 @@
 import { ConfigService } from '@nestjs/config';
 import { rpc } from '@stellar/stellar-sdk';
 import { SorobanRpcService } from './soroban-rpc.service';
-import { RpcUnavailableError } from './soroban-rpc.errors';
 
 jest.mock('@stellar/stellar-sdk', () => {
-  const actual = jest.requireActual('@stellar/stellar-sdk');
+  const actual = jest.requireActual<typeof import('@stellar/stellar-sdk')>('@stellar/stellar-sdk');
   return {
     ...actual,
     rpc: {
       ...actual.rpc,
       Server: jest.fn(),
     },
-  };
+  } as typeof import('@stellar/stellar-sdk');
 });
 
 describe('SorobanRpcService', () => {
