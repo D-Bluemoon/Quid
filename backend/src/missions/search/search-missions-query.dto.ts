@@ -32,7 +32,10 @@ export class SearchMissionsQueryDto {
   requiresProof?: boolean;
 
   @IsOptional()
-  @Transform(({ value }) => (Array.isArray(value) ? value : [value]))
+  @Transform(
+    ({ value }: { value: unknown }) =>
+      (Array.isArray(value) ? value : [value]) as string[],
+  )
   @IsArray()
   @IsString({ each: true })
   tags?: string[];
