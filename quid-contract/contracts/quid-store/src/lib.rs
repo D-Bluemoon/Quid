@@ -24,7 +24,8 @@ mod upgrade;
 use error::QuidError;
 use soroban_sdk::token;
 use types::{
-    DataKey, Mission, MissionStatus, StakeTiers, Submission, SubmissionStatus, TestRequirement,
+    DataKey, HunterWindowRecord, Mission, MissionStatus, RateLimit, StakeTiers, Submission,
+    SubmissionStatus, TestRequirement,
 };
 
 /// `attestation_type` written on the reputation record a payout produces.
@@ -360,6 +361,61 @@ impl QuidStoreContract {
         Ok(())
     }
 
+    /// Set protocol-wide submission rate limit (SC-021).
+    /// Admin authorization required.
+    pub fn set_rate_limit(env: Env, admin: Address, config: Option<RateLimit>) {
+        admin.require_auth();
+        let key = DataKey::SubmissionRateLimit;
+        if let Some(cfg) = config {
+            env.storage().instance().set(&key, &cfg);
+        } else {
+            env.storage().instance().remove(&key);
+        }
+    }
+
+    /// Get current protocol-wide submission rate limit (SC-021).
+    pub fn get_rate_limit(env: Env) -> Option<RateLimit> {
+        env.storage().instance().get(&DataKey::SubmissionRateLimit)
+    }
+
+    /// Check and record hunter submission under the rolling rate limit window (SC-021).
+    fn check_and_update_rate_limit(env: &Env, hunter: &Address) -> Result<(), QuidError> {
+        let rate_limit: Option<RateLimit> =
+            env.storage().instance().get(&DataKey::SubmissionRateLimit);
+
+        let Some(limit) = rate_limit else {
+            return Ok(());
+        };
+
+        let now = env.ledger().timestamp();
+        let key = DataKey::HunterWindow(hunter.clone());
+        let current_window: Option<HunterWindowRecord> = env.storage().temporary().get(&key);
+
+        let record = match current_window {
+            Some(w) if now < w.window_start.saturating_add(limit.window_secs) => {
+                if w.count >= limit.max {
+                    return Err(QuidError::RateLimited);
+                }
+                HunterWindowRecord {
+                    window_start: w.window_start,
+                    count: w.count.saturating_add(1),
+                }
+            }
+            _ => HunterWindowRecord {
+                window_start: now,
+                count: 1,
+            },
+        };
+
+        let ttl_ledgers = ((limit.window_secs / 5) + 1).max(1) as u32;
+        env.storage().temporary().set(&key, &record);
+        env.storage()
+            .temporary()
+            .extend_ttl(&key, ttl_ledgers, ttl_ledgers);
+
+        Ok(())
+    }
+
     fn compute_tier_stake(env: &Env, mission_id: u64, hunter: &Address, base: i128) -> i128 {
         let tiers: Option<StakeTiers> = env
             .storage()
@@ -407,6 +463,8 @@ impl QuidStoreContract {
         if Self::is_expired(&mission, env.ledger().timestamp()) {
             return Err(QuidError::MissionExpired);
         }
+
+        Self::check_and_update_rate_limit(&env, &hunter)?;
 
         if mission.status != MissionStatus::Open && mission.status != MissionStatus::Started {
             return Err(QuidError::MissionNotOpen);

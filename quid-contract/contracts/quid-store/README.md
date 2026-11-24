@@ -180,5 +180,7 @@ every owner-gated entrypoint.
 | `MissionTestRequirement(mission)` | Proof registry address for PoT gate |
 | `MissionStakeTiers(mission)` | Reputation stake tiers |
 | `HunterStake(mission, hunter)` | Actual staked amount (may be tier-reduced) |
+| `SubmissionRateLimit` | Protocol-wide submission rate limit configuration (admin set) |
+| `HunterWindow(hunter)` | Per-hunter rolling window counter for submissions (temporary storage) |
 
 Per-record writes call `extend_ttl` where new keys are set.
