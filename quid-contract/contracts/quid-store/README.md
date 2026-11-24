@@ -171,3 +171,14 @@ cargo test -p quid-store
 The suite covers the happy path, capacity and double-spend guards, the fee
 vault and staking pool integrations, plus negative authorization tests for
 every owner-gated entrypoint.
+
+
+## SC-012 / SC-022 storage
+
+| Key | Purpose |
+|-----|--------|
+| `MissionTestRequirement(mission)` | Proof registry address for PoT gate |
+| `MissionStakeTiers(mission)` | Reputation stake tiers |
+| `HunterStake(mission, hunter)` | Actual staked amount (may be tier-reduced) |
+
+Per-record writes call `extend_ttl` where new keys are set.

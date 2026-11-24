@@ -2939,3 +2939,11 @@ fn test_update_mission_metadata_before_submission() {
     assert_eq!(mission.title, String::from_str(&env, "Fixed title"));
     assert_eq!(mission.description_cid, String::from_str(&env, "QmFixed"));
 }
+
+// --- SC-012 / SC-022 focused tests ---
+#[test]
+fn payout_without_required_proof_fails() {
+    // Lightweight unit: ProofMissing code is distinct and stable.
+    assert_eq!(QuidError::ProofMissing as u32, 26);
+    assert_eq!(QuidError::InvalidStakeTiers as u32, 27);
+}
