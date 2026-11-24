@@ -93,4 +93,22 @@ pub enum DataKey {
     MissionStakeTiers(u64),
     /// Base stake amount configured for a mission (optional).
     MissionBaseStake(u64),
+    /// Protocol-wide submission rate limit configuration (SC-021).
+    SubmissionRateLimit,
+    /// Per-hunter rolling window counter for submissions in temporary storage (SC-021).
+    HunterWindow(Address),
+}
+
+#[contracttype]
+#[derive(Clone, Debug, Eq, PartialEq)]
+pub struct RateLimit {
+    pub max: u32,
+    pub window_secs: u64,
+}
+
+#[contracttype]
+#[derive(Clone, Debug, Eq, PartialEq)]
+pub struct HunterWindowRecord {
+    pub window_start: u64,
+    pub count: u32,
 }

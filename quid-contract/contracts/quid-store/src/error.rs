@@ -37,4 +37,6 @@ pub enum QuidError {
     ProofMissing = 26,
     /// Stake tier config invalid (length mismatch or bps not descending).
     InvalidStakeTiers = 27,
+    /// Rate limit reached for hunter within rolling window (SC-021).
+    RateLimited = 28,
 }
