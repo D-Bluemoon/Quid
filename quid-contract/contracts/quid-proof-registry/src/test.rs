@@ -1,5 +1,4 @@
-#![cfg(test)]
-use crate::{QuidProofRegistry, QuidProofRegistryClient, ProofError};
+use crate::{ProofError, QuidProofRegistry, QuidProofRegistryClient};
 use soroban_sdk::{
     testutils::{Address as _, Ledger},
     Address, BytesN, Env, String,
@@ -17,7 +16,7 @@ fn setup() -> (Env, QuidProofRegistryClient<'static>, Address) {
 
 #[test]
 fn threshold_default_one_attestation_validates() {
-    let (env, client, admin) = setup();
+    let (env, client, _admin) = setup();
     let v = Address::generate(&env);
     let hunter = Address::generate(&env);
     let key = BytesN::from_array(&env, &[1u8; 32]);
@@ -58,7 +57,7 @@ fn duplicate_attestation_fails() {
 
 #[test]
 fn expired_signed_proof_rejected() {
-    let (env, client, admin) = setup();
+    let (env, client, _admin) = setup();
     let v = Address::generate(&env);
     let hunter = Address::generate(&env);
     client.register_verifier(&v, &BytesN::from_array(&env, &[1u8; 32]));

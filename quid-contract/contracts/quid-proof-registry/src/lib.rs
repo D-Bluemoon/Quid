@@ -1,6 +1,11 @@
 #![no_std]
+// `submit_signed_proof` takes one argument per signed-proof field (hunter,
+// mission, tx hash, data CID, verifier, signature, expiry). The
+// `#[contractimpl]` macro emits the matching client and trait methods at the
+// same span, so the allowance has to live at crate level to cover them.
+#![allow(clippy::too_many_arguments)]
 use soroban_sdk::{
-    contract, contractclient, contractimpl, Address, Bytes, BytesN, Env, String, Vec,
+    contract, contractclient, contractimpl, xdr::ToXdr, Address, Bytes, BytesN, Env, String, Vec,
 };
 
 mod error;
@@ -50,7 +55,9 @@ impl QuidProofRegistry {
             .get(&DataKey::Admin)
             .ok_or(ProofError::NotInitialized)?;
         admin.require_auth();
-        env.storage().instance().set(&DataKey::StoreContract, &store);
+        env.storage()
+            .instance()
+            .set(&DataKey::StoreContract, &store);
         Ok(())
     }
 

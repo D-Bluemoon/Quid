@@ -55,7 +55,6 @@ pub struct Submission {
 }
 
 #[contracttype]
-#[contracttype]
 #[derive(Clone, Debug, Eq, PartialEq)]
 pub struct StakeTiers {
     /// Inclusive minimum reputation scores for each tier (ascending).
@@ -71,6 +70,7 @@ pub struct TestRequirement {
     pub registry: Address,
 }
 
+#[contracttype]
 pub enum DataKey {
     Mission(u64),
     MissionCount,

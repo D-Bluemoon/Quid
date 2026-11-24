@@ -38,4 +38,3 @@ pub enum QuidError {
     /// Stake tier config invalid (length mismatch or bps not descending).
     InvalidStakeTiers = 27,
 }
-

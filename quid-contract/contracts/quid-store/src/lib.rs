@@ -23,7 +23,9 @@ mod upgrade;
 
 use error::QuidError;
 use soroban_sdk::token;
-use types::{DataKey, Mission, MissionStatus, StakeTiers, Submission, SubmissionStatus, TestRequirement};
+use types::{
+    DataKey, Mission, MissionStatus, StakeTiers, Submission, SubmissionStatus, TestRequirement,
+};
 
 /// `attestation_type` written on the reputation record a payout produces.
 const PAYOUT_ATTESTATION_TYPE: &str = "quid-payout";
@@ -190,7 +192,6 @@ pub trait ReputationScore {
     fn get_score(env: Env, subject: Address) -> u32;
 }
 
-
 #[contract]
 pub struct QuidStoreContract;
 
@@ -321,8 +322,6 @@ impl QuidStoreContract {
             .ok_or(QuidError::SubmissionNotFound)
     }
 
-    /// Submit Feedback
-
     /// SC-011/SC-012: require a valid proof in `registry` before payout.
     pub fn set_test_requirement(
         env: Env,
@@ -342,11 +341,7 @@ impl QuidStoreContract {
     }
 
     /// SC-022: configure reputation-scaled stake tiers for a mission.
-    pub fn set_stake_tiers(
-        env: Env,
-        mission_id: u64,
-        tiers: StakeTiers,
-    ) -> Result<(), QuidError> {
+    pub fn set_stake_tiers(env: Env, mission_id: u64, tiers: StakeTiers) -> Result<(), QuidError> {
         let mission = Self::get_mission(env.clone(), mission_id)?;
         mission.owner.require_auth();
         if tiers.thresholds.len() != tiers.bps.len() || tiers.thresholds.is_empty() {
@@ -570,8 +565,8 @@ impl QuidStoreContract {
             .persistent()
             .get::<DataKey, TestRequirement>(&DataKey::MissionTestRequirement(mission_id))
         {
-            let ok = ProofRegistryClient::new(&env, &req.registry)
-                .has_valid_proof(&mission_id, &hunter);
+            let ok =
+                ProofRegistryClient::new(&env, &req.registry).has_valid_proof(&mission_id, &hunter);
             if !ok {
                 return Err(QuidError::ProofMissing);
             }
