@@ -33,4 +33,9 @@ pub enum QuidError {
     /// `expire_mission` was called before the mission's deadline.
     MissionNotExpired = 24,
     ReputationNotSet = 25,
+    /// Mission requires a verified proof and hunter has none.
+    ProofMissing = 26,
+    /// Stake tier config invalid (length mismatch or bps not descending).
+    InvalidStakeTiers = 27,
 }
+
