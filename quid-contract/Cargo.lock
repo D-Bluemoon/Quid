@@ -1033,7 +1033,6 @@ dependencies = [
 ]
 
 [[package]]
-<<<<<<< HEAD
 name = "quid-oracle-bridge"
 version = "0.0.0"
 dependencies = [
