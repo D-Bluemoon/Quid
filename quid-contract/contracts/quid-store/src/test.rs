@@ -2441,6 +2441,43 @@ fn test_payout_issues_attestation_when_reputation_is_configured() {
     client.submit_feedback(&mission_id, &hunter, &cid, &token_address, &10);
     client.payout_participant(&mission_id, &hunter);
 
+    let events = store_events(&env, &contract_id);
+    assert_eq!(events.len(), 3);
+    assert_store_event(
+        &env,
+        &contract_id,
+        &events,
+        0,
+        &PayoutAttestedEvent {
+            mission_id,
+            attestation_id: 1,
+        },
+    );
+    assert_store_event(
+        &env,
+        &contract_id,
+        &events,
+        1,
+        &PayoutDoneEvent {
+            mission_id,
+            hunter: hunter.clone(),
+            gross_amount: 100,
+            fee_amount: 0,
+            net_amount: 100,
+        },
+    );
+    assert_store_event(
+        &env,
+        &contract_id,
+        &events,
+        2,
+        &StakeRefundEvent {
+            mission_id,
+            hunter: hunter.clone(),
+            amount: 10,
+        },
+    );
+
     assert_eq!(reputation.get_attestation_count(), 1);
 
     let attestation = reputation.get_attestation(&1);
